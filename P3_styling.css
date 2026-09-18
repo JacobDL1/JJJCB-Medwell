@@ -7,3 +7,14 @@
 {
   display: block;
 }
+
+.P3_banner
+{
+  align-items: center;
+}
+
+nav.tabs
+{
+  width: 50%;
+  justify-content: space-evenly;
+}
