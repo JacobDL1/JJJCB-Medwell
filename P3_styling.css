@@ -10,11 +10,14 @@
 
 .P3_banner
 {
+  display: flex;
   align-items: center;
 }
 
 nav.tabs
 {
+  display: flex;
   width: 50%;
+  margin: 0 auto;
   justify-content: space-evenly;
 }
