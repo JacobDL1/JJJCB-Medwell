@@ -1,6 +1,7 @@
 .tab-content
 {
   display: none;
+  text-align: center;
 }
 
 .tab-content.active
@@ -12,6 +13,7 @@
 {
   display: flex;
   align-items: center;
+  justify-content: centered;
 }
 
 nav.tabs
