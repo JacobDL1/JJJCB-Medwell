@@ -9,12 +9,23 @@
   display: block;
 }
 
+.tab-content h1
+{
+  color: #082e59;
+}
+
+.tab-content p
+{
+  color: #64748b;
+}
+
 .P3_banner
 {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2.5rem;
+  color: #082e59;
 }
 
 nav.tabs
@@ -23,4 +34,16 @@ nav.tabs
   width: 50%;
   margin: 0 auto;
   justify-content: space-evenly;
+}
+
+.nav-tab.active
+{
+  background-color: #082e59;
+  color: #ffffff;
+}
+
+.nav-tab:hover
+{
+  background-color: #082e59;
+  color: #ffffff;
 }
