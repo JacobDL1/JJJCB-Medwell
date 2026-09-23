@@ -32,6 +32,7 @@ body
   background-color: #ffffff;
   margin: 0 auto;
   min-height: 100vh;
+  border-inline: 2px solid #082e59;
 }
 
 /* Spacing and placement of tabs */
