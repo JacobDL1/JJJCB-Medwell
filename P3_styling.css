@@ -1,22 +1,7 @@
-.tab-content
+header
 {
-  display: none;
-  text-align: center;
-}
-
-.tab-content.active
-{
-  display: block;
-}
-
-.tab-content h1
-{
-  color: #082e59;
-}
-
-.tab-content p
-{
-  color: #64748b;
+  border-bottom: 2px solid #082e59;
+  background-color: #64748b;
 }
 
 .P3_banner
@@ -25,7 +10,9 @@
   align-items: center;
   justify-content: center;
   font-size: 2.5rem;
+  font-weight: 900;
   color: #082e59;
+  padding: 1.5rem 0;
 }
 
 nav.tabs
@@ -46,4 +33,25 @@ nav.tabs
 {
   background-color: #082e59;
   color: #ffffff;
+}
+
+.tab-content
+{
+  display: none;
+  text-align: center;
+}
+
+.tab-content.active
+{
+  display: block;
+}
+
+.tab-content h1
+{
+  color: #082e59;
+}
+
+.tab-content p
+{
+  color: #64748b;
 }
