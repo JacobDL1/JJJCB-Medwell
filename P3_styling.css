@@ -1,9 +1,12 @@
+/* Sets border and background colors for banner */
 header
 {
   border-bottom: 2px solid #082e59;
   background-color: #64748b;
+  margin-botton: 2rem;
 }
 
+/* Formats banner and gives its text color */
 .P3_banner
 {
   display: flex;
@@ -15,6 +18,13 @@ header
   padding: 1.5rem 0;
 }
 
+/* Allows banner to touch screen corners */
+body
+{
+  margin: 0;
+}
+
+/* Spacing and placement of tabs */
 nav.tabs
 {
   display: flex;
@@ -23,34 +33,48 @@ nav.tabs
   justify-content: space-evenly;
 }
 
+/* rules for unselected tabs */
+.nav-tab
+{
+  background-color: #64748b;
+  color: #082e59;
+  border: 2px solid #082e59;
+}
+
+/* Color rules for active tabs */
 .nav-tab.active
 {
   background-color: #082e59;
   color: #ffffff;
 }
 
+/* Color rules for tabs being hovered by mouse */
 .nav-tab:hover
 {
   background-color: #082e59;
   color: #ffffff;
 }
 
+/* Formatting for tab content */
 .tab-content
 {
   display: none;
   text-align: center;
 }
 
+/* Displays tab's text when it's selected */
 .tab-content.active
 {
   display: block;
 }
 
+/* Color rules for tab headers */
 .tab-content h1
 {
   color: #082e59;
 }
 
+/* Color rules for tab content */
 .tab-content p
 {
   color: #64748b;
