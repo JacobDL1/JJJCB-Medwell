@@ -17,12 +17,6 @@ header
   padding: 1.5rem 0;
 }
 
-/* Made to resolve border issue with side borders to extending all the way to banner */
-main
-{
-  padding-top: 2rem;
-}
-
 /* Allows banner to touch screen corners, adds color to leftmost and rightmost fifths of the screen */
 body
 {
@@ -45,6 +39,7 @@ body
   border-left: 2px solid #082e59;
   border-right: 2px solid #082e59;
   min-height: 100vh;
+  padding-top: 2rem;
 }
 
 /* Spacing and placement of tabs */
