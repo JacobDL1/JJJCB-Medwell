@@ -25,6 +25,13 @@ body
   background-color: #64748b;
 }
 
+/* made to allow for border for the sides that doesn't extend into banner */
+main
+{
+  border-left: 2px solid #082e59;
+  border-right: 2px solid #082e59;
+}
+
 /* make middle 3/5ths of the screen white */
 .content-wrap
 {
@@ -32,7 +39,6 @@ body
   background-color: #ffffff;
   margin: 0 auto;
   min-height: 100vh;
-  border-inline: 2px solid #082e59;
 }
 
 /* Spacing and placement of tabs */
@@ -42,6 +48,8 @@ nav.tabs
   width: 50%;
   margin: 0 auto;
   justify-content: space-evenly;
+  border-left: 2px solid #082e59;
+  border-right: 2px solid #082e59;
 }
 
 /* rules for unselected tabs */
