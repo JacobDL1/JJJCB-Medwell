@@ -28,7 +28,7 @@ body
 /* make middle 3/5ths of the screen white */
 .content-wrap
 {
-  width: 60%;
+  width: 80%;
   background-color: #ffffff;
   margin: 0 auto;
   min-height: 100vh;
