@@ -25,20 +25,20 @@ body
   background-color: #64748b;
 }
 
-/* made to allow for border for the sides that doesn't extend into banner */
-main
-{
-  border-left: 2px solid #082e59;
-  border-right: 2px solid #082e59;
-}
-
-/* make middle 3/5ths of the screen white */
+/* Make middle 3/5ths of the screen white */
 .content-wrap
 {
   width: 80%;
   background-color: #ffffff;
   margin: 0 auto;
   min-height: 100vh;
+}
+
+/* Borders for the side */
+.below-banner-content-wrap
+{
+  border-left: 2px solid #082e59;
+  border-right: 2px solid #082e59;
 }
 
 /* Spacing and placement of tabs */
@@ -48,8 +48,6 @@ nav.tabs
   width: 50%;
   margin: 0 auto;
   justify-content: space-evenly;
-  border-left: 2px solid #082e59;
-  border-right: 2px solid #082e59;
 }
 
 /* rules for unselected tabs */
