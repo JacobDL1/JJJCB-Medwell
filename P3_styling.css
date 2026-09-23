@@ -36,8 +36,8 @@ nav.tabs
 /* rules for unselected tabs */
 .nav-tab
 {
-  background-color: #64748b;
-  color: #000000;
+  background-color: #ffffff;
+  color: #082e59;
   border: 2px solid #082e59;
 }
 
