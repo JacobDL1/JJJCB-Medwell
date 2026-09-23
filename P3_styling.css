@@ -3,7 +3,6 @@ header
 {
   border-bottom: 2px solid #082e59;
   background-color: #64748b;
-  margin-bottom: 2rem;
 }
 
 /* Formats banner and gives its text color */
@@ -16,6 +15,12 @@ header
   font-weight: 900;
   color: #082e59;
   padding: 1.5rem 0;
+}
+
+/* Made to resolve border issue with side borders to extending all the way to banner */
+main
+{
+  margin-top: 2rem;
 }
 
 /* Allows banner to touch screen corners, adds color to leftmost and rightmost fifths of the screen */
