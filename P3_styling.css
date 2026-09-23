@@ -20,7 +20,7 @@ header
 /* Made to resolve border issue with side borders to extending all the way to banner */
 main
 {
-  margin-top: 2rem;
+  padding-top: 2rem;
 }
 
 /* Allows banner to touch screen corners, adds color to leftmost and rightmost fifths of the screen */
