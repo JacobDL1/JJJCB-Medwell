@@ -39,6 +39,7 @@ body
 {
   border-left: 2px solid #082e59;
   border-right: 2px solid #082e59;
+  min-height: 100vh;
 }
 
 /* Spacing and placement of tabs */
