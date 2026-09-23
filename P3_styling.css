@@ -18,10 +18,18 @@ header
   padding: 1.5rem 0;
 }
 
-/* Allows banner to touch screen corners */
+/* Allows banner to touch screen corners, adds color to leftmost and rightmost fifths of the screen */
 body
 {
   margin: 0;
+  background-color: #64748b;
+}
+
+/* make middle 3/5ths of the screen white */
+.content-wrap
+{
+  width: 60%
+  color: #ffffff;
 }
 
 /* Spacing and placement of tabs */
