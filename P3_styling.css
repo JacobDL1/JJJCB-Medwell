@@ -1,5 +1,5 @@
 /* Formatting for all landing page text */
-.welcome-section
+.welcome-text
 {
   text-align: center;
   padding: 3rem 1.5rem;
@@ -21,10 +21,10 @@
 .account-buttons
 {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   gap: 1rem;
   margin-top: 2rem;
-  flex-wrap: wrap;
 }
 
 /* Color rules for button not being hovered on */
@@ -33,6 +33,10 @@
   background-color: #ffffff;
   color: #082e59;
   border: 2px solid #082e59;
+  padding: 1.25rem 2rem;
+  font-size: 1.5rem;
+  width: 300px;
+  text-align: center;
   text-decoration: none;
 }
 
