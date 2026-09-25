@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <link rel="stylesheet" href="P3_styling.css">
+</head>
+<body>
+    <div class = "content-wrap">
+        <!-- Puts a static banner accros the top of the screen -->
+        <header>
+            <div class = "P3_banner">P3</div>
+        </header>
+
+        <!-- class made to resolve issue with side border extending into banner -->
+        <div class = "below-banner-content-wrap">
+            <!-- Creates tabs for landing page navigation -->
+            <nav class="tabs" role="tablist">
+                <button class = "nav-tab active" role = "tab" data-target = "events-tab">Events</button>
+                <button class = "nav-tab" role = "tab" data-target = "prevention-tab">Prevention</button>
+                <button class = "nav-tab" role = "tab" data-target = "shadowing-tab">Shadowing</button>
+            </nav>
+        
+            <!-- Content of each tab -->
+            <main>
+                <section id = "events-tab" class = "tab-content active" role = "tabpanel">
+                    <h1>See What Events Are Happening In Your Community</h1>
+                </section>
+                
+                <section id = "prevention-tab" class = "tab-content" role = "tabpanel">
+                    <h1>Close The Gap Between Prevention And Treatment</h1>
+                    <p>Learn about different illnesses, conditions, and diseases</p>
+                </section>
+        
+                <section id = "shadowing-tab" class = "tab-content" role = "tabpanel">
+                    <h1>Find A Professional To Shadow</h1>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Makes buttons functional -->
+    <script>
+        const tab_buttons = document.querySelectorAll('.nav-tab');
+        const tab_contents = document.querySelectorAll('.tab-content');
+
+        tab_buttons.forEach(butn =>
+        {
+            butn.addEventListener('click', () =>
+            {
+                tab_buttons.forEach(btn => btn.classList.remove('active'));
+                tab_contents.forEach(cont => cont.classList.remove('active'));
+
+                butn.classList.add('active');
+                document.getElementById(butn.dataset.target).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
