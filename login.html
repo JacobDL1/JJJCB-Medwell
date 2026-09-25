@@ -18,7 +18,7 @@
                 <h1>Log In</h1>
 
                 <!-- Login form -->
-                <form onsubmit = "return false">
+                <form onsubmit = "handleLogin(); return false">
                     <p><label>Email: <input type = "email" required></label></p>
                     <p><label>Password: <input type = "password" required></label></p>
                     <button type = "submit">Log In</button>
@@ -28,5 +28,23 @@
             </main>
         </div>
     </div>
+
+    <script>
+        function handleLogin()
+        {
+            const get_URL_type = new URLSearchParams(window.location.search);
+            const type = get_URL_type.get('type');
+
+            const route = 
+            {
+                user: 'user_landingpage.html',
+                admin: 'admin_landingpage.html',
+                sponsor: 'sponsor_landingpage.html',
+                'non-profit': 'nonprofit_landingpage.html'
+            };
+
+            window.location.href = route[type];
+        }
+    </script>
 </body>
 </html>
