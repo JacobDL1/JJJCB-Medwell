@@ -54,6 +54,22 @@ header
   background-color: #64748b;
 }
 
+/* styling for submit buttons on the login and signup pages when not bneing hovered */
+.form-button
+{
+  background-color: #ffffff;
+  color: #082e59;
+  border: 2px solid #082e59;
+  padding: 1.25rem 2rem;
+}
+
+/* Color rules for button being hovered on */
+.form-button:hover
+{
+  background-color: #082e59;
+  color: #ffffff;
+}
+
 /* Formats banner and gives its text color */
 .P3_banner
 {
