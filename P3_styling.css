@@ -1,3 +1,48 @@
+/* Formatting for all landing page text */
+.welcome-section
+{
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
+
+/* Coloring for landing page header */
+.welcome-section h1
+{
+  color: #082e59;
+}
+
+/* Coloring for landing page subtext */
+.welcome-section p
+{
+  color: #64748b;
+}
+
+/* Formatting of buttons */
+.account-buttons
+{
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+/* Color rules for button not being hovered on */
+.account-btn
+{
+  background-color: #ffffff;
+  color: #082e59;
+  border: 2px solid #082e59;
+  text-decoration: none;
+}
+
+/* Color rules for button being hovered on */
+.account-btn:hover
+{
+  background-color: #082e59;
+  color: #ffffff;
+}
+
 /* Sets border and background colors for banner */
 header
 {
@@ -51,7 +96,7 @@ nav.tabs
   justify-content: space-evenly;
 }
 
-/* rules for unselected tabs */
+/* Rules for unselected tab buttons */
 .nav-tab
 {
   background-color: #ffffff;
