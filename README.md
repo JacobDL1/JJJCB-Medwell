@@ -10,3 +10,5 @@ support, and community impact activities, P3 seeks to address these issues.
 Trello Board Link: https://trello.com/b/YQRSB7Qk/jjjcb-medwell
 
 Zoom Link: Personal meeting ID (PMI) - 791 844 3665 Passcode: 5V06ZH - https://unt.zoom.us/j/7918443665?pwd=l0Ry7UF4RpXjxD0mmGgJVSaFbEvTAS.1
+
+Microsoft Teams Link: https://teams.cloud.microsoft/l/channel/19%3AODVUYr7vtyhBJZ-12d8MaXzxwcRujcQV7B7BM9dXrJU1%40thread.tacv2/General?groupId=fad0d602-634d-4875-bb60-45c08a8b3740&tenantId=70de1992-07c6-480f-a318-a1afcba03983
