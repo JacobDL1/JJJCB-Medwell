@@ -19,5 +19,8 @@
   "homepage": "https://github.com/JacobDL1/JJJCB-Medwell#readme",
   "devDependencies": {
     "supabase": "^2.120.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.117.3"
   }
 }
