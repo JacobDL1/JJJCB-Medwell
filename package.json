@@ -1,0 +1,23 @@
+{
+  "name": "jjjcb-medwell",
+  "version": "1.0.0",
+  "description": "The idea behind the P3 project for Medwell Solutions is to create a functioning prototype that can verify participation, award points, manage campaign content, and provide measurable reporting to partners.\r Essentially, P3 encourages people to participate in and complete approved events, activities, and learning materials, then allows those running these initiatives to verify, track, and report on engagement.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JacobDL1/JJJCB-Medwell.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JacobDL1/JJJCB-Medwell/issues"
+  },
+  "homepage": "https://github.com/JacobDL1/JJJCB-Medwell#readme",
+  "devDependencies": {
+    "supabase": "^2.120.0"
+  }
+}
