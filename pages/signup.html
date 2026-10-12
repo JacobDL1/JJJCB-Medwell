@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
-    <link rel="stylesheet" href="P3_styling.css">
+    <link rel="stylesheet" href="../css/P3_styling.css">
 </head>
 <body>
     <div class = "content-wrap">
@@ -29,13 +29,13 @@
                 <br>
                 <p>Want to signup for P3 as a sponsor or non-profit? Contact us at changelater@gmail.com to get started!</p>
                 <br>
-                <a href="index.html?">Already have an account? Return to account selection here!</a>
+                <a href="../index.html?">Already have an account? Return to account selection here!</a>
             </main>
         </div>
     </div>
 
     <script type="module">
-        import { supabase } from './supabaseClient.js'
+        import { supabase } from '../js/supabaseClient.js'
 
         document.getElementById('signup-form').addEventListener('submit', async (e) => {
             e.preventDefault()
