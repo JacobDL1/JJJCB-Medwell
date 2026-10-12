@@ -54,6 +54,32 @@
         });
     </script>
 
-    <script type="module" src="main.js"></script>
+    <!-- Makes sure only verified users can access associated account type pages -->
+    <script type="module">
+        import { supabase } from './supabaseClient.js'
+    
+        const REQUIRED_TYPE = 'sponsor'
+    
+        const { data: { session } } = await supabase.auth.getSession()
+    
+        if (!session)
+        {
+            window.location.href = 'index.html'
+        }
+        else
+        {
+            const { data: row } = await supabase
+                .schema('user_accounts')
+                .from('login_credentials')
+                .select('account_type')
+                .eq('id', session.user.id)
+                .single()
+    
+            if (row?.account_type !== REQUIRED_TYPE)
+            {
+                window.location.href = 'index.html'
+            }
+        }
+    </script>
 </body>
 </html>
