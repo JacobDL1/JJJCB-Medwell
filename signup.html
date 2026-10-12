@@ -18,12 +18,12 @@
                 <h1>Sign Up</h1>
 
                 <!-- Sign up form -->
-                <form action="login.html">
-                    <input type="hidden" name="type" value="user">
-                    <p><label>First name: <input required></label></p>
-                    <p><label>Last name: <input required></label></p>
-                    <p><label>Email: <input type = "email" required></label></p>
-                    <p><label>Password: <input type = "password" minlength = "8" required></label></p>
+                <form id="signup-form">
+                    <p><label>First name: <input id = "first-name" required></label></p>
+                    <p><label>Last name: <input id = "last-name" required></label></p>
+                    <p><label>Email: <input type = "email" id = "email" required></label></p>
+                    <p><label>Password: <input type = "password" id = "password" minlength = "8" required></label></p>
+                    <p id="message" style="color: red;"></p>
                     <button type = "submit" class = "form-button">Sign Up</button>
                 </form>
                 <br>
@@ -34,6 +34,37 @@
         </div>
     </div>
 
-    <script type="module" src="main.js"></script>
+    <script type="module">
+        import { supabase } from './supabaseClient.js'
+
+        document.getElementById('signup-form').addEventListener('submit', async (e) => {
+            e.preventDefault()
+
+            const first_name = document.getElementById('first-name').value
+            const last_name = document.getElementById('last-name').value
+            const email = document.getElementById('email').value
+            const password = document.getElementById('password').value
+            const message = document.getElementById('message')
+
+            const { error } = await supabase.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: {
+                        account_type: 'user',
+                        first_name: first_name,
+                        last_name: last_name
+                    }
+                }
+            })
+
+            if (error) {
+                message.textContent = error.message
+                return
+            }
+
+            window.location.href = 'login.html?type=user'
+        })
+    </script>
 </body>
 </html>
