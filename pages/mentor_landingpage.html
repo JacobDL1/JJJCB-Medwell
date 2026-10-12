@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Landing Page</title>
-    <link rel="stylesheet" href="P3_styling.css">
+    <title>Mentor Landing Page</title>
+    <link rel="stylesheet" href="../css/P3_styling.css">
 </head>
 <body>
     <div class = "content-wrap">
@@ -17,28 +17,19 @@
         <div class = "below-banner-content-wrap">
             <!-- Creates tabs for landing page navigation -->
             <nav class="tabs" role="tablist">
-                <button class = "nav-tab active" role = "tab" data-target = "approval-tab">Approvals</button>
-                <button class = "nav-tab" role = "tab" data-target = "registered-sponsors-tab">Sponsors</button>
-                <button class = "nav-tab" role = "tab" data-target = "registered-nonprofits-tab">Non-Profits</button>
-                <button class = "nav-tab" role = "tab" data-target = "account-creation-tab">Account</button>
+                <button class = "nav-tab active" role = "tab" data-target = "post-tab">Postings</button>
+                <button class = "nav-tab" role = "tab" data-target = "applicants-tab">Applicants</button>
             </nav>
         
             <!-- Content of each tab -->
             <main>
-                <section id = "approval-tab" class = "tab-content active" role = "tabpanel">
-                    <h1>Approval Requests</h1>
+                <section id = "post-tab" class = "tab-content active" role = "tabpanel">
+                    <h1>Your Mentorship Postings</h1>
+                    <p>See who has applied to be your shadow</p>
                 </section>
-                
-                <section id = "registered-sponsors-tab" class = "tab-content" role = "tabpanel">
-                    <h1>Registered Sponsors</h1>
-                </section>
-        
-                <section id = "registered-nonprofits-tab" class = "tab-content" role = "tabpanel">
-                    <h1>Registered Non-Profits</h1>
-                </section>
-
-                <section id = "account-creation-tab" class = "tab-content" role = "tabpanel">
-                    <h1>Account Creation</h1>
+                <section id = "applicants-tab" class = "tab-content" role = "tabpanel">
+                    <h1>Your Applicants</h1>
+                    <p>Manage your applicants</p>
                 </section>
             </main>
         </div>
@@ -64,15 +55,15 @@
 
     <!-- Makes sure only verified users can access associated account type pages -->
     <script type="module">
-        import { supabase } from './supabaseClient.js'
+        import { supabase } from '../js/supabaseClient.js'
     
-        const REQUIRED_TYPE = 'admin'
+        const REQUIRED_TYPE = 'mentor'
     
         const { data: { session } } = await supabase.auth.getSession()
     
         if (!session)
         {
-            window.location.href = 'index.html'
+            window.location.href = '../index.html'
         }
         else
         {
@@ -85,7 +76,7 @@
     
             if (row?.account_type !== REQUIRED_TYPE)
             {
-                window.location.href = 'index.html'
+                window.location.href = '../index.html'
             }
         }
     </script>

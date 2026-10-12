@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log In</title>
-    <link rel="stylesheet" href="P3_styling.css">
+    <link rel="stylesheet" href="../css/P3_styling.css">
 </head>
 <body>
     <div class = "content-wrap">
@@ -25,21 +25,21 @@
                     <button type = "submit" class = "form-button">Log In</button>
                 </form>
                 <br>
-                <a href="signup.html">No account? Sign up here!</a>
+                <a href="/pages/signup.html">No account? Sign up here!</a>
             </main>
         </div>
     </div>
 
     <!-- Connection to backend to verify credentials -->
     <script type="module">
-        import { supabase } from './supabaseClient.js'
+        import { supabase } from '../js/supabaseClient.js'
 
         const route =
         {
             user: 'user_landingpage.html',
             admin: 'admin_landingpage.html',
             sponsor: 'sponsor_landingpage.html',
-            'non-profit': 'nonprofit_landingpage.html',
+            'non-profit': 'nonprofit_landingpage.html', //variable issue? -JacobC
             mentor: 'mentor_landingpage.html'
         }
     
