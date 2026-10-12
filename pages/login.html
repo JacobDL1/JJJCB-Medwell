@@ -36,7 +36,7 @@
 
         const route =
         {
-            user: 'user_landingpage.html',
+            participant: 'user_landingpage.html',
             admin: 'admin_landingpage.html',
             sponsor: 'sponsor_landingpage.html',
             'non-profit': 'nonprofit_landingpage.html', //variable issue? -JacobC
@@ -59,24 +59,23 @@
             }
     
             // Step 2: look up their account type in your table
-            const { data: row, error: rowError } = await supabase
-                .schema('user_accounts')
-                .from('login_credentials')
-                .select('account_type')
-                .eq('id', data.user.id)
+            const { data: profile, error: profileError } = await supabase
+                .from('profiles')
+                .select('role')
+                .eq('user_id', data.user.id)
                 .single()
     
-            if (rowError || !row) {
+            if (profileError || !profile) {
                 errorBox.textContent = 'Could not load your account type'
                 return
             }
     
-            if (type && row.account_type !== type) {
+            if (type && profile.role !== type) {
                 errorBox.textContent = 'This is not a ' + type + ' account'
                 return
             }
-    
-            window.location.href = route[row.account_type]
+            
+            window.location.href = route[profile.role]
         })
     </script>
 </body>

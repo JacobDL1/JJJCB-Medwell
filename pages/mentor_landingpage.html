@@ -55,7 +55,7 @@
 
     <!-- Makes sure only verified users can access associated account type pages -->
     <script type="module">
-        import { supabase } from '../js/supabaseClient.js'
+        import { supabase } from './supabaseClient.js'
     
         const REQUIRED_TYPE = 'mentor'
     
@@ -67,14 +67,13 @@
         }
         else
         {
-            const { data: row } = await supabase
-                .schema('user_accounts')
-                .from('login_credentials')
-                .select('account_type')
-                .eq('id', session.user.id)
+            const { data: profile, error: profileError } = await supabase
+                .from('profiles')
+                .select('role')
+                .eq('user_id', session.user.id)
                 .single()
     
-            if (row?.account_type !== REQUIRED_TYPE)
+            if (error || !profile || profile.role !== 'mentor')
             {
                 window.location.href = '../index.html'
             }

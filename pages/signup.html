@@ -51,7 +51,8 @@
                 password,
                 options: {
                     data: {
-                        account_type: 'user',
+                        // "account_type": "user removed since my new auth trigger ignores metadata for role and always
+                        // sets it to participant on signup -JC
                         first_name: first_name,
                         last_name: last_name
                     }
@@ -63,7 +64,7 @@
                 return
             }
 
-            window.location.href = 'login.html?type=user'
+            window.location.href = 'login.html?type=participant'
         })
     </script>
 </body>
