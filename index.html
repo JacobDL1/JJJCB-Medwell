@@ -3,36 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Type Selection</title>
+    <title>Log In</title>
     <link rel="stylesheet" href="css/P3_styling.css">
 </head>
 <body>
-    <div class = "content-wrap">
-        <!-- Puts a static banner accros the top of the screen -->
+    <div class="content-wrap">
         <header>
-            <div class = "P3_banner">P3</div>
+            <div class="P3_banner">P3</div>
         </header>
 
-        <!-- class for addressing css styling below the P3 banner -->
-        <div class = "below-banner-content-wrap">
-            <!-- Class for styling/formatting welcome text -->
-           <div class = "welcome-text">
-               <h1>Welcome to P3!</h1>
-               <p>Select your account type</p>
-
-               <!-- Class for styling/formatting buttons -->
-               <div class = "account-buttons">
-                   <a href="pages/login.html?type=user" class = "account-btn">User</a>
-                   <a href="pages/login.html?type=sponsor" class = "account-btn">Sponsor</a>
-                   <a href="pages/login.html?type=non-profit" class = "account-btn">Non-Profit</a>
-                   <a href="pages/login.html?type=mentor" class = "account-btn">Mentor</a>
-                   <a href="pages/login.html?type=admin" class = "account-btn">Administrator</a>
-               </div>
-               <br>
-               <a href="pages/signup.html">No account? Sign up here!</a>
-           </div>
+        <div class="below-banner-content-wrap">
+            <main class="tab-content active">
+                <h1>Welcome to P3!</h1>
+                <form id="login-form">
+                    <p><input type="email" id="email" placeholder="Email" required></p>
+                    <p><input type="password" id="password" placeholder="Password" required></p>
+                    <p id="error" style="color: red;"></p>
+                    <button type="submit" class="form-button">Log In</button>
+                </form>
+                <br>
+                <a href="pages/signup.html">No account? Sign up here!</a>
+            </main>
         </div>
     </div>
-    
-    <script type="module" src="/js/main.js"></script>
+
+    <script type="module">
+        import { supabase } from './js/supabaseClient.js'
+
+        const pages = {
+            participant: 'user',
+            sponsor: 'sponsor',
+            nonprofit: 'nonprofit',
+            mentor: 'mentor',
+            admin: 'admin'
+        }
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault()
+            const email = document.getElementById('email').value
+            const password = document.getElementById('password').value
+
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+            if (error) return document.getElementById('error').textContent = error.message
+
+            const { data: profile } = await supabase
+                .from('profiles').select('role').eq('user_id', data.user.id).single()
+
+            window.location.href = `pages/${pages[profile.role]}_landingpage.html`
+        })
+    </script>
 </body>
+</html>
