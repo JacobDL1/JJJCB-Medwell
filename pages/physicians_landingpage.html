@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physician Landing Page</title>
+    <link rel="stylesheet" href="../css/P3_styling.css">
+</head>
+<body>
+    <div class="content-wrap">
+        <header>
+            <div class="P3_banner">P3</div>
+        </header>
+
+        <div class="below-banner-content-wrap">
+            <nav class="tabs" role="tablist">
+                <button class="nav-tab active" data-target="postings-tab">Postings</button>
+                <button class="nav-tab" data-target="applicants-tab">Applicants</button>
+            </nav>
+
+            <main>
+                <section id="postings-tab" class="tab-content active">
+                    <h1>Your Shadowing Postings</h1>
+                    <p>Create and manage shadowing opportunities</p>
+                </section>
+
+                <section id="applicants-tab" class="tab-content">
+                    <h1>Your Applicants</h1>
+                    <p>Review students who applied to shadow you</p>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.nav-tab').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.nav-tab, .tab-content').forEach(el => el.classList.remove('active'))
+                btn.classList.add('active')
+                document.getElementById(btn.dataset.target).classList.add('active')
+            })
+        })
+    </script>
+
+    <script type="module">
+        import { supabase } from '../js/supabaseClient.js'
+
+        const { data: { session } } = await supabase.auth.getSession()
+        const { data: profile } = session
+            ? await supabase.from('profiles').select('role').eq('user_id', session.user.id).single()
+            : {}
+
+        if (profile?.role !== 'physician') window.location.href = '../index.html'
+    </script>
+</body>
+</html>
