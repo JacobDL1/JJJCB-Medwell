@@ -53,7 +53,7 @@
 
     <!-- Imports events from backend ordered by date -->
     <script type="module">
-        import { supabase } from './supabaseClient.js'
+        import { supabase } from '../js/supabaseClient.js'
     
         const list = document.getElementById('event-list')
     
@@ -85,17 +85,15 @@
     
                 const who = document.createElement('p')
                 const syntax = [] /* Makes sure syntax in event listing is correct if there isn't a sponsor or non-profit associated yet */
-                if (ev.nonprofit_name)
+                if (x.nonprofit_name)
                 {
-                    parts.push('Hosted by ' + ev.nonprofit_name)
+                    syntax.push('Hosted by ' + x.nonprofit_name)
                 }
-                if (ev.sponsor_name)
+                if (x.sponsor_name)
                 {
-                    parts.push('Sponsored by ' + ev.sponsor_name)
+                    syntax.push('Sponsored by ' + x.sponsor_name)
                 }
-                who.textContent = parts.join(', ')
-                
-                who.textContent = 'Hosted by ' + x.nonprofit_name + (x.sponsor_name ? ', sponsored by ' + x.sponsor_name : '')
+                who.textContent = syntax.join(', ')
     
                 const desc = document.createElement('p')
                 desc.textContent = x.description ?? ''
@@ -128,7 +126,7 @@
     <script type="module">
         import { supabase } from '../js/supabaseClient.js'
     
-        const REQUIRED_TYPE = 'user'
+        const REQUIRED_TYPE = 'participant'
     
         const { data: { session } } = await supabase.auth.getSession()
     
@@ -144,7 +142,7 @@
                 .eq('user_id', session.user.id)
                 .single()
     
-            if (error || !profile || profile.role !== 'participant')
+            if (profileError || !profile || profile.role !== 'participant')
             {
                 window.location.href = '../index.html'
             }
