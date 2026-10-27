@@ -794,3 +794,13 @@ body.dark-mode .theme-toggle:hover {
     color: #a3eee1;
     border-color: #a3eee1;
 }
+
+/* Fix for input fields in dark mode */
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select 
+{
+    background-color: #203b45; 
+    color: #e8f1f2; 
+    border: 1px solid #49656c; 
+}
