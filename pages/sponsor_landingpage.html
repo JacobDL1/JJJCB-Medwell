@@ -74,7 +74,7 @@
                 .eq('user_id', session.user.id)
                 .single()
     
-            if (error || !profile || profile.role !== 'sponsor')
+            if (profileError || !profile || profile.role !== 'sponsor')
             {
                 window.location.href = '../index.html'
             }
