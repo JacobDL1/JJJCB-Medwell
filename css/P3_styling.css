@@ -1,163 +1,796 @@
-/* Formatting for all landing page text */
-.welcome-text
-{
-  text-align: center;
-  padding: 2rem 2rem;
+:root {
+    --ink: #152e3b;
+    --muted: #5b707c;
+    --teal: #087e83;
+    --line: #dce7e8;
+    --paper: #f3f7f7;
+    --navy: #102f3b
 }
 
-/* Coloring for landing page header */
-.welcome-section h1
-{
-  color: #082e59;
+* {
+    box-sizing: border-box
 }
 
-/* Coloring for landing page subtext */
-.welcome-section p
-{
-  color: #64748b;
+body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 16px/1.6 'Segoe UI', Arial, sans-serif
 }
 
-/* Formatting of buttons */
-.account-buttons
-{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 2rem;
+a {
+    color: var(--teal);
+    text-underline-offset: 4px
 }
 
-/* Color rules for button not being hovered on */
-.account-btn
-{
-  background-color: #ffffff;
-  color: #082e59;
-  border: 2px solid #082e59;
-  padding: 1.25rem 2rem;
-  font-size: 1.5rem;
-  width: 300px;
-  text-align: center;
-  text-decoration: none;
+button,
+input {
+    font: inherit
 }
 
-/* Color rules for button being hovered on */
-.account-btn:hover
-{
-  background-color: #082e59;
-  color: #ffffff;
+button,
+a,
+input {
+    -webkit-tap-highlight-color: transparent
 }
 
-/* Sets border and background colors for banner */
-header
-{
-  border-bottom: 2px solid #082e59;
-  background-color: #64748b;
+button {
+    cursor: pointer
 }
 
-/* styling for submit buttons on the login and signup pages when not bneing hovered */
-.form-button
-{
-  background-color: #ffffff;
-  color: #082e59;
-  border: 2px solid #082e59;
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+    outline: 3px solid #d29835;
+    outline-offset: 4px
 }
 
-/* Color rules for button being hovered on */
-.form-button:hover
-{
-  background-color: #082e59;
-  color: #ffffff;
+header {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6%;
+    border-bottom: 1px solid var(--line);
+    background: #fff
 }
 
-/* Formats banner and gives its text color */
-.P3_banner
-{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5rem;
-  font-weight: 900;
-  color: #082e59;
-  padding: 1.5rem 0;
+.P3_banner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: var(--ink);
+    font-weight: 750;
+    font-size: 23px;
+    line-height: 1.2
 }
 
-/* Allows banner to touch screen corners, adds color to leftmost and rightmost fifths of the screen */
-body
-{
-  margin: 0;
-  background-color: #64748b;
+.brand-mark {
+    background: var(--navy);
+    color: #fff;
+    width: 53px;
+    height: 53px;
+    display: grid;
+    place-content: center;
+    border-radius: 16px;
+    position: relative;
+    font-size: 23px
 }
 
-/* Make middle 3/5ths of the screen white */
-.content-wrap
-{
-  width: 80%;
-  background-color: #ffffff;
-  margin: 0 auto;
-  min-height: 100vh;
+.brand-mark>span {
+    position: absolute;
+    right: 5px;
+    top: 2px;
+    color: #73ded0;
+    font-size: 15px
 }
 
-/* Borders for the side */
-.below-banner-content-wrap
-{
-  border-left: 2px solid #082e59;
-  border-right: 2px solid #082e59;
-  min-height: 100vh;
-  padding-top: 2rem;
+.brand-sub {
+    display: block;
+    font-size: 8px;
+    letter-spacing: 1.8px;
+    margin-top: 7px;
+    color: var(--muted)
 }
 
-/* Spacing and placement of tabs */
-nav.tabs
-{
-  display: flex;
-  width: 50%;
-  margin: 0 auto;
-  justify-content: space-evenly;
+.header-note {
+    font-size: 12px;
+    color: var(--muted)
 }
 
-/* Rules for unselected tab buttons */
-.nav-tab
-{
-  background-color: #ffffff;
-  color: #082e59;
-  border: 2px solid #082e59;
+.auth-page .below-banner-content-wrap {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    min-height: calc(100vh - 100px)
 }
 
-/* Color rules for active tabs */
-.nav-tab.active
-{
-  background-color: #082e59;
-  color: #ffffff;
+.welcome-panel {
+    background: var(--navy);
+    color: #fff;
+    padding: 60px 12% 30px;
+    position: relative;
+    overflow: hidden
 }
 
-/* Color rules for tabs being hovered by mouse */
-.nav-tab:hover
-{
-  background-color: #082e59;
-  color: #ffffff;
+.eyebrow {
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: 800;
+    color: var(--teal)
 }
 
-/* Formatting for tab content */
-.tab-content
-{
-  display: none;
-  text-align: center;
+.welcome-panel .eyebrow {
+    color: #8bdbcc
 }
 
-/* Displays tab's text when it's selected */
-.tab-content.active
-{
-  display: block;
+.welcome-panel h2 {
+    font-size: clamp(36px, 4vw, 60px);
+    letter-spacing: -2px;
+    line-height: 1.1;
+    font-weight: 600;
+    margin: 22px 0
 }
 
-/* Color rules for tab headers */
-.tab-content h1
-{
-  color: #082e59;
+.welcome-panel em {
+    font-style: normal;
+    color: #8bdbcc
 }
 
-/* Color rules for tab content */
-.tab-content p
-{
-  color: #64748b;
+.welcome-panel>p {
+    max-width: 370px;
+    color: #bed1d7;
+    font-size: 14px
+}
+
+.orbit-art {
+    height: 230px;
+    position: relative;
+    display: grid;
+    place-items: center;
+    max-width: 390px;
+    margin: 20px auto
+}
+
+.orbit-ring {
+    width: 210px;
+    height: 210px;
+    border: 1px solid #54727b;
+    border-radius: 50%;
+    position: absolute;
+    transform: rotate(-25deg)
+}
+
+.orbit-ring:after {
+    content: '';
+    position: absolute;
+    inset: 24px -32px;
+    border: 1px solid #355762;
+    border-radius: 50%;
+    transform: rotate(55deg)
+}
+
+.orbit-core {
+    font-size: 58px;
+    letter-spacing: -3px;
+    font-weight: 700;
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(130deg, #275965, #1c404c);
+    border: 1px solid #5a8187;
+    border-radius: 32px;
+    display: grid;
+    place-content: center;
+    box-shadow: 0 20px 45px #081e2950;
+    transform: rotate(-8deg)
+}
+
+.orbit-core>span {
+    position: absolute;
+    right: 13px;
+    top: 2px;
+    color: #95e1cc;
+    font-size: 28px
+}
+
+.orbit-chip {
+    position: absolute;
+    background: #fff;
+    color: var(--ink);
+    padding: 10px 15px;
+    border-radius: 12px;
+    font-size: 11px;
+    box-shadow: 0 12px 35px #00192340;
+    animation: float 6s ease-in-out infinite
+}
+
+.chip-one {
+    left: 0;
+    top: 40px
+}
+
+.chip-two {
+    right: 0;
+    bottom: 32px;
+    animation-delay: -3s
+}
+
+.orbit-dot {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #b4d9a4;
+    position: absolute;
+    right: 60px;
+    top: 30px
+}
+
+.hero-bottom {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    border-top: 1px solid #35535e;
+    padding-top: 18px
+}
+
+.hero-bottom p {
+    font-size: 11px;
+    color: #bed1d7;
+    margin: 0
+}
+
+.hero-bottom strong {
+    color: #fff;
+    font-weight: 500
+}
+
+.small-mark {
+    font-size: 28px;
+    color: #8bdbcc
+}
+
+.tab-content {
+    display: none
+}
+
+.tab-content.active {
+    display: block;
+    animation: enter .35s ease both
+}
+
+.auth-page main.tab-content {
+    width: min(100%, 490px);
+    margin: auto;
+    padding: 55px 45px
+}
+
+.auth-page h1 {
+    font-size: 38px;
+    letter-spacing: -1.4px;
+    line-height: 1.15;
+    margin: 15px 0
+}
+
+.form-intro {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 30px
+}
+
+form p {
+    margin: 17px 0
+}
+
+label {
+    display: block;
+    font-size: 12px;
+    font-weight: 650;
+    color: var(--ink)
+}
+
+input {
+    display: block;
+    width: 100%;
+    margin-top: 7px;
+    background: #fff;
+    border: 1px solid #cbdadd;
+    border-radius: 9px;
+    padding: 12px 14px;
+    color: var(--ink);
+    min-width: 0;
+    transition: border-color .2s, box-shadow .2s
+}
+
+input:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px #087e8312
+}
+
+input::placeholder {
+    color: #7b8e98;
+    font-size: 13px
+}
+
+.form-button {
+    background: var(--teal);
+    color: #fff;
+    border: 0;
+    border-radius: 9px;
+    padding: 13px 22px;
+    width: 100%;
+    font-weight: 650;
+    box-shadow: 0 5px 12px #087e8320;
+    transition: transform .2s, background .2s
+}
+
+.form-button:hover {
+    background: #06686c;
+    transform: translateY(-2px)
+}
+
+.auth-page main>a {
+    font-size: 12px;
+    text-decoration: none;
+    font-weight: 650
+}
+
+.auth-page main>p:not(.form-intro) {
+    font-size: 12px;
+    color: var(--muted)
+}
+
+#error,
+#error-message,
+#message {
+    font-size: 13px
+}
+
+.password-control {
+    position: relative
+}
+
+.password-control input {
+    padding-right: 65px
+}
+
+.password-toggle {
+    position: absolute;
+    right: 8px;
+    top: 9px;
+    border: 0;
+    background: transparent;
+    color: var(--teal);
+    font-size: 11px;
+    padding: 8px
+}
+
+.dashboard-page .below-banner-content-wrap {
+    max-width: 1160px;
+    margin: auto;
+    padding: 48px 28px
+}
+
+.dashboard-intro h2 {
+    font-size: 36px;
+    letter-spacing: -1px;
+    margin: 10px 0
+}
+
+.dashboard-intro p {
+    color: var(--muted);
+    margin: 0 0 32px
+}
+
+nav.tabs {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+    padding: 6px;
+    background: #e7eeee;
+    border-radius: 12px;
+    width: fit-content;
+    margin-bottom: 28px
+}
+
+.nav-tab {
+    border: 0;
+    border-radius: 8px;
+    padding: 11px 22px;
+    background: transparent;
+    color: var(--muted);
+    font-weight: 650;
+    font-size: 13px;
+    transition: background .2s, color .2s
+}
+
+.nav-tab:hover {
+    background: #fff9;
+    color: var(--teal)
+}
+
+.nav-tab.active {
+    background: #fff;
+    color: var(--teal);
+    box-shadow: 0 2px 7px #18394110
+}
+
+.dashboard-page section.tab-content {
+    background: #fff;
+    border: 1px solid var(--line);
+    padding: 34px;
+    border-radius: 18px
+}
+
+.dashboard-page h1 {
+    font-size: 26px;
+    letter-spacing: -.6px;
+    margin: 0 0 10px;
+    max-width: 700px
+}
+
+.dashboard-page section>p {
+    color: var(--muted);
+    font-size: 14px
+}
+
+.empty-state {
+    margin-top: 30px;
+    padding: 45px 24px;
+    background: #f6f9f9;
+    border: 1px dashed #bdcfd2;
+    border-radius: 13px;
+    text-align: center
+}
+
+.empty-icon {
+    display: inline-grid;
+    place-items: center;
+    background: #e3f0ed;
+    color: var(--teal);
+    width: 48px;
+    height: 48px;
+    border-radius: 15px;
+    font-size: 23px
+}
+
+.empty-state h3 {
+    font-size: 16px;
+    margin: 14px 0 8px
+}
+
+.empty-state p {
+    color: var(--muted);
+    font-size: 13px;
+    margin: auto;
+    max-width: 380px
+}
+
+.password-hint {
+    font-size: 11px;
+    color: var(--muted)
+}
+
+@keyframes float {
+    50% {
+        transform: translateY(-9px)
+    }
+}
+
+@keyframes enter {
+    from {
+        opacity: 0;
+        transform: translateY(8px)
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0)
+    }
+}
+
+@media(min-width:1500px) {
+    .content-wrap {
+        max-width: 1600px;
+        margin: auto
+    }
+
+    .welcome-panel {
+        padding-top: 80px
+    }
+}
+
+@media(max-width:760px) {
+    header {
+        height: 82px;
+        padding: 0 6%
+    }
+
+    .header-note {
+        display: none
+    }
+
+    .auth-page .below-banner-content-wrap {
+        grid-template-columns: 1fr
+    }
+
+    .welcome-panel {
+        padding: 32px 7%
+    }
+
+    .welcome-panel h2 {
+        font-size: 38px
+    }
+
+    .welcome-panel>p {
+        max-width: 100%
+    }
+
+    .orbit-art,
+    .hero-bottom {
+        display: none
+    }
+
+    .auth-page main.tab-content {
+        padding: 36px 7%;
+        width: 100%;
+        max-width: 520px
+    }
+
+    .auth-page h1 {
+        font-size: 32px
+    }
+
+    .dashboard-page .below-banner-content-wrap {
+        padding: 30px 18px
+    }
+
+    .dashboard-intro h2 {
+        font-size: 29px
+    }
+
+    .dashboard-page section.tab-content {
+        padding: 23px
+    }
+
+    .nav-tab {
+        padding: 10px 14px
+    }
+}
+
+@media(prefers-reduced-motion:reduce) {
+
+    *,
+    *:before,
+    *:after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important
+    }
+}
+
+/* =========================================
+   PASSWORD FEEDBACK
+   ========================================= */
+
+/* Style the Caps Lock and password guidance messages. */
+.password-hint {
+    margin: 8px 0 0;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: #e9f5f2;
+    color: #35645f;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+/* Keeps the feedback hidden until JavaScript displays it. */
+.password-hint:empty,
+.password-hint[hidden] {
+    display: none;
+}
+
+/* Add feedback when hovering over Show/Hide. */
+.password-toggle {
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.password-toggle:hover {
+    background: #e9f5f2;
+    color: #065d61;
+}
+
+/* =========================================
+   DASHBOARD INTERACTIONS
+   ========================================= */
+
+/* Make the dashboard card feel more responsive. */
+.dashboard-page section.tab-content {
+    box-shadow: 0 8px 28px rgba(16, 47, 59, 0.05);
+}
+
+/* Adds a subtle lift to tabs when hovered. */
+.nav-tab {
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.nav-tab:hover {
+    transform: translateY(-2px);
+}
+
+/* This will keep the selected tab steady. */
+.nav-tab.active:hover {
+    transform: none;
+}
+
+/* Gives empty-state icons a little more depth. */
+.empty-icon {
+    box-shadow: 0 4px 12px rgba(8, 126, 131, 0.12);
+    transition: transform 0.2s;
+}
+
+.empty-state:hover .empty-icon {
+    transform: scale(1.08);
+}
+
+/* Respects the users who prefer less movement. */
+@media (prefers-reduced-motion: reduce) {
+    .nav-tab,
+    .password-toggle,
+    .empty-icon {
+        transition: none;
+    }
+
+    .nav-tab:hover,
+    .empty-state:hover .empty-icon {
+        transform: none;
+    }
+}
+
+/* =========================================
+   SMALLER DASHBOARD TABS
+   ========================================= */
+
+.sub-tabs {
+    margin-top: 28px;
+}
+
+.sub-tab-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    border-bottom: 1px solid var(--line);
+}
+
+.sub-tab {
+    padding: 10px 16px;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.sub-tab:hover {
+    color: var(--teal);
+    background: #f3f8f7;
+}
+
+.sub-tab.active {
+    color: var(--teal);
+    border-bottom-color: var(--teal);
+    font-weight: 700;
+}
+
+.sub-tab:focus-visible {
+    outline: 3px solid #d29835;
+    outline-offset: 2px;
+}
+
+.sub-tab-panel {
+    padding: 20px 4px;
+}
+
+.sub-tab-panel h3 {
+    margin: 0 0 8px;
+    color: var(--ink);
+}
+
+.sub-tab-panel p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sub-tab {
+        transition: none;
+    }
+}
+
+/* =========================================
+   LIGHT AND DARK MODE
+   ========================================= */
+
+.theme-toggle {
+    padding: 9px 14px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: #fff;
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.theme-toggle:hover {
+    border-color: var(--teal);
+    color: var(--teal);
+}
+
+/* Theme colors used throughout the dashboard */
+body.dark-mode {
+    --ink: #e8f1f2;
+    --muted: #adc1c6;
+    --teal: #79d8ca;
+    --line: #35505a;
+    --paper: #101f27;
+    --navy: #0b1a21;
+
+    background: var(--paper);
+    color: var(--ink);
+}
+
+body.dark-mode header,
+body.dark-mode .dashboard-page section.tab-content {
+    background: #182f39;
+}
+
+/* The body itself has both classes, so use this selector
+   for the dashboard's white content card. */
+body.dark-mode.dashboard-page section.tab-content {
+    background: #182f39;
+}
+
+body.dark-mode nav.tabs {
+    background: #203b45;
+}
+
+body.dark-mode .nav-tab.active {
+    background: #34535c;
+    color: #a3eee1;
+}
+
+body.dark-mode .nav-tab:hover,
+body.dark-mode .sub-tab:hover {
+    background: #294851;
+}
+
+body.dark-mode .sub-tab.active {
+    color: #a3eee1;
+    border-bottom-color: #a3eee1;
+}
+
+body.dark-mode .empty-state {
+    background: #203b45;
+    border-color: #49656c;
+}
+
+body.dark-mode .empty-icon {
+    background: #294e50;
+    color: #a3eee1;
+}
+
+body.dark-mode .theme-toggle {
+    background: #203b45;
+    color: #e8f1f2;
+    border-color: #49656c;
+}
+
+body.dark-mode .theme-toggle:hover {
+    color: #a3eee1;
+    border-color: #a3eee1;
 }
