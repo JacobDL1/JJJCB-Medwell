@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sponsor Landing Page</title>
+    <title>Non-Profit Landing Page</title>
     <link rel="stylesheet" href="../css/P3_styling.css">
 </head>
 <body>
@@ -45,7 +45,7 @@
 
                     <form id="event-creation-form">
                     <p><label>Event name: <input id="title" required></label></p>
-                    <p><label>Date and time: <input type="date-time" id="event-date" required></label></p>
+                    <p><label>Date and time: <input type="datetime-local" id="event-date" required></label></p>
                     <p><label>Location: <input id="location" required></label></p>
                     <p><label>Sponsor: <input id="sponsor"></label></p>
                     <p><label>Non-profit: <input id="nonprofit" required></label></p>
@@ -60,7 +60,7 @@
 
     <!-- Allows submission of events to backend -->
     <script type="module">
-        import { supabase } from './supabaseClient.js'
+        import { supabase } from '../js/supabaseClient.js'
     
         document.getElementById('event-creation-form').addEventListener('submit', async (e) => {
             e.preventDefault()
@@ -111,7 +111,7 @@
     <script type="module">
         import { supabase } from '../js/supabaseClient.js'
     
-        const REQUIRED_TYPE = 'non-profit'
+        const REQUIRED_TYPE = 'nonprofit'
     
         const { data: { session } } = await supabase.auth.getSession()
     
@@ -127,7 +127,7 @@
                 .eq('user_id', session.user.id)
                 .single()
     
-            if (error || !profile || profile.role !== 'nonprofit')
+            if (profileError || !profile || profile.role !== 'nonprofit')
             {
                 window.location.href = '../index.html'
             }
