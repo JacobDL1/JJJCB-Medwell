@@ -28,6 +28,9 @@
                 <section id = "events-tab" class = "tab-content active" role = "tabpanel">
                     <h1>See What Events Are Happening In Your Community</h1>
                     <p>Know when and where to be to participate in events</p>
+                    
+                    <!-- Pulls events from backend  -->
+                    <div id = "event-list"></div>
                 </section>
                 
                 <section id = "prevention-tab" class = "tab-content" role = "tabpanel">
@@ -48,6 +51,61 @@
         </div>
     </div>
 
+    <!-- Imports events from backend ordered by date -->
+    <script type="module">
+        import { supabase } from './supabaseClient.js'
+    
+        const list = document.getElementById('event-list')
+    
+        const { data: events, error } = await supabase
+            .from('activities')
+            .select('*')
+            .gte('event_date', new Date().toISOString())
+            .order('event_date')
+    
+        if (error)
+        {
+            list.textContent = 'Could not load events'
+        }
+        else if (events.length === 0)
+        {
+            list.textContent = 'No upcoming events'
+        }
+        else
+        {
+            for (const x of events)
+            {
+                const card = document.createElement('div')
+    
+                const title = document.createElement('h3')
+                title.textContent = x.title
+    
+                const when = document.createElement('p')
+                when.textContent = new Date(x.event_date).toLocaleString() + ' at ' + x.location
+    
+                const who = document.createElement('p')
+                const syntax = [] /* Makes sure syntax in event listing is correct if there isn't a sponsor or non-profit associated yet */
+                if (ev.nonprofit_name)
+                {
+                    parts.push('Hosted by ' + ev.nonprofit_name)
+                }
+                if (ev.sponsor_name)
+                {
+                    parts.push('Sponsored by ' + ev.sponsor_name)
+                }
+                who.textContent = parts.join(', ')
+                
+                who.textContent = 'Hosted by ' + x.nonprofit_name + (x.sponsor_name ? ', sponsored by ' + x.sponsor_name : '')
+    
+                const desc = document.createElement('p')
+                desc.textContent = x.description ?? ''
+    
+                card.append(title, when, who, desc)
+                list.append(card)
+            }
+        }
+    </script>
+    
     <!-- Makes buttons functional -->
     <script>
         const tab_buttons = document.querySelectorAll('.nav-tab');
