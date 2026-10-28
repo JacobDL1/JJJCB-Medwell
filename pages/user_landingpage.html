@@ -78,16 +78,6 @@
                     </div>
                 </section>
                 
-                <section id="prevention-tab" class="tab-content" role="tabpanel">
-                    <h1>Close The Gap Between Prevention And Treatment</h1>
-                    <p>Learn about different illnesses, conditions, and diseases</p>
-                </section>
-        
-                <section id="shadowing-tab" class="tab-content" role="tabpanel">
-                    <h1>Find A Professional To Shadow</h1>
-                    <p>See vetted postings from professionals willing to take on a shadow</p>
-                </section>
-
                 <!-- PREVENTION -->
                 <section id="prevention-tab" class="tab-content" role="tabpanel">
                     <h1>Close the gap between prevention and treatment</h1>
@@ -173,39 +163,64 @@
     </div>
 
     <!-- Switch the main category tabs -->
-    
-    <!-- Imports events from backend ordered by date -->
+    <script>
+        const tabButtons = document.querySelectorAll('.nav-tab');
+        const tabContents = document.querySelectorAll('main > .tab-content');
+
+        tabButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                tabButtons.forEach((tab) => tab.classList.remove('active'));
+                tabContents.forEach((content) => content.classList.remove('active'));
+
+                button.classList.add('active');
+                document.getElementById(button.dataset.target).classList.add('active');
+            });
+        });
+    </script>
+
+    <!-- Participant dashboard: check sign-in and role first, then load events -->
     <script type="module">
         import { supabase } from '../js/supabaseClient.js'
-    
+
+        const REQUIRED_ROLE = 'participant'
         const list = document.getElementById('event-list')
-    
-        const { data: events, error } = await supabase
-            .from('activities')
-            .select('*')
-            .gte('event_date', new Date().toISOString())
-            .order('event_date')
-    
-        if (error)
+
+        function goHome()
         {
-            list.textContent = 'Could not load events'
+            // replace() keeps this page out of the back-button history
+            window.location.replace('../index.html')
         }
-        else if (events.length === 0)
+
+        async function loadEvents()
         {
-            list.textContent = 'No upcoming events'
-        }
-        else
-        {
+            const { data: events, error } = await supabase
+                .from('activities')
+                .select('*')
+                .gte('event_date', new Date().toISOString())
+                .order('event_date')
+
+            if (error)
+            {
+                list.textContent = 'Could not load events'
+                return
+            }
+
+            if (events.length === 0)
+            {
+                list.textContent = 'No upcoming events'
+                return
+            }
+
             for (const x of events)
             {
                 const card = document.createElement('div')
-    
+
                 const title = document.createElement('h3')
                 title.textContent = x.title
-    
+
                 const when = document.createElement('p')
-                when.textContent = new Date(x.event_date).toLocaleString() + ' at ' + x.location
-    
+                when.textContent = new Date(x.event_date).toLocaleString() + (x.location ? ' at ' + x.location : '')
+
                 const who = document.createElement('p')
                 const syntax = [] /* Makes sure syntax in event listing is correct if there isn't a sponsor or non-profit associated yet */
                 if (x.nonprofit_name)
@@ -217,45 +232,43 @@
                     syntax.push('Sponsored by ' + x.sponsor_name)
                 }
                 who.textContent = syntax.join(', ')
-    
+
                 const desc = document.createElement('p')
                 desc.textContent = x.description ?? ''
-    
+
                 card.append(title, when, who, desc)
                 list.append(card)
             }
         }
-    </script>
-    
-    <!-- Makes buttons functional -->
 
-    <!-- Check that the signed-in account has the participant role -->
-    <script type="module">
-        import { supabase } from '../js/supabaseClient.js'
-    
-        const REQUIRED_TYPE = 'participant'
-    
-        const { data: { session } } = await supabase.auth.getSession()
-    
-        if (!session)
+        async function init()
         {
-            window.location.href = '../index.html'
-        }
-        else
-        {
+            const { data: { session } } = await supabase.auth.getSession()
+
+            if (!session)
+            {
+                goHome()
+                return
+            }
+
             const { data: profile, error: profileError } = await supabase
                 .from('profiles')
                 .select('role')
                 .eq('user_id', session.user.id)
                 .single()
-    
-            if (profileError || !profile || profile.role !== 'participant')
-            {
-                window.location.href = '../index.html'
-            }
-        }
-    </script>
 
+            if (profileError || !profile || profile.role !== REQUIRED_ROLE)
+            {
+                goHome()
+                return
+            }
+
+            await loadEvents()
+        }
+
+        init()
+    </script>
+    
     <script src="../js/design.js" defer></script>
 </body>
 </html>
