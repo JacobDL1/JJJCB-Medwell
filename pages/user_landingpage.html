@@ -1,96 +1,274 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Landing Page</title>
+    <title>Participant Dashboard | P3</title>
     <link rel="stylesheet" href="../css/P3_styling.css">
 </head>
-<body>
-    <div class = "content-wrap">
-        <!-- Puts a static banner accros the top of the screen -->
+
+<body class="dashboard-page">
+    <div class="content-wrap">
         <header>
-            <div class = "P3_banner">P3</div>
+            <a class="P3_banner" href="../index.html">
+                <span class="brand-mark">P3<span>+</span></span>
+                <span>
+                    Medwell
+                    <span class="brand-sub">PARTICIPATE. PREVENT. PROGRESS.</span>
+                </span>
+            </a>
+
+            <span class="header-note">Healthier communities start here</span>
+            <button type="button" class="theme-toggle" aria-pressed="false">
+    🌙 Dark mode
+</button>
         </header>
 
-        <!-- class made to resolve issue with side border extending into banner -->
-        <div class = "below-banner-content-wrap">
-            <!-- Creates tabs for landing page navigation -->
-            <nav class="tabs" role="tablist">
-                <button class = "nav-tab active" role = "tab" data-target = "events-tab">Events</button>
-                <button class = "nav-tab" role = "tab" data-target = "prevention-tab">Prevention</button>
-                <button class = "nav-tab" role = "tab" data-target = "shadowing-tab">Shadowing</button>
-                <button class = "nav-tab" role = "tab" data-target = "points-tab">Points</button>
+        <div class="below-banner-content-wrap">
+            <div class="dashboard-intro">
+                <span class="eyebrow">YOUR P3 WORKSPACE</span>
+                <h2>Let's move forward, together.</h2>
+                <p>Your participant hub for a healthier community.</p>
+            </div>
+
+            <!-- Main category tabs -->
+            <nav class="tabs" role="tablist" aria-label="Dashboard categories">
+                <button class="nav-tab active" role="tab" data-target="events-tab">
+                    Events
+                </button>
+
+                <button class="nav-tab" role="tab" data-target="prevention-tab">
+                    Prevention
+                </button>
+
+                <button class="nav-tab" role="tab" data-target="shadowing-tab">
+                    Shadowing
+                </button>
+
+                <button class="nav-tab" role="tab" data-target="points-tab">
+                    Points
+                </button>
             </nav>
-        
-            <!-- Content of each tab -->
+
             <main>
-                <section id = "events-tab" class = "tab-content active" role = "tabpanel">
+                <!-- EVENTS -->
+                <section id="events-tab" class="tab-content active" role="tabpanel">
                     <h1>See What Events Are Happening In Your Community</h1>
                     <p>Know when and where to be to participate in events</p>
+
+                    <div class="sub-tabs">
+                        <div class="sub-tab-buttons">
+                            <button type="button" class="sub-tab active" data-panel="events-upcoming">
+                                Upcoming
+                            </button>
+                            <button type="button" class="sub-tab" data-panel="events-completed">
+                                Completed
+                            </button>
+                        </div>
+
+                        <div id="events-upcoming" class="sub-tab-panel">
+                            <!-- Pulls events from backend -->
+                            <div id="event-list"></div>
+                        </div>
+
+                        <div id="events-completed" class="sub-tab-panel" hidden>
+                            <h3>Completed Events</h3>
+                            <p>Your completed events will appear here.</p>
+                        </div>
+                    </div>
                 </section>
                 
-                <section id = "prevention-tab" class = "tab-content" role = "tabpanel">
-                    <h1>Close The Gap Between Prevention And Treatment</h1>
-                    <p>Learn about different illnesses, conditions, and diseases</p>
-                </section>
-        
-                <section id = "shadowing-tab" class = "tab-content" role = "tabpanel">
-                    <h1>Find A Professional To Shadow</h1>
-                    <p>See vetted postings from professionals willing to take on a shadow</p>
+                <!-- PREVENTION -->
+                <section id="prevention-tab" class="tab-content" role="tabpanel">
+                    <h1>Close the gap between prevention and treatment</h1>
+                    <p>Learn more about health, wellness, and prevention.</p>
+
+                    <div class="sub-tabs">
+                        <div class="sub-tab-buttons">
+                            <button type="button" class="sub-tab active" data-panel="prevention-resources">
+                                Resources
+                            </button>
+                            <button type="button" class="sub-tab" data-panel="prevention-completed">
+                                Completed
+                            </button>
+                        </div>
+
+                        <div id="prevention-resources" class="sub-tab-panel">
+                            <h3>Health Resources</h3>
+                            <p>Prevention and health education resources will appear here.</p>
+                        </div>
+
+                        <div id="prevention-completed" class="sub-tab-panel" hidden>
+                            <h3>Completed Resources</h3>
+                            <p>Resources you have completed will appear here.</p>
+                        </div>
+                    </div>
                 </section>
 
-                <section id = "points-tab" class = "tab-content" role = "tabpanel">
-                    <h1>Point Shop</h1>
-                    <p>Spend your hard earned points</p>
+                <!-- SHADOWING -->
+                <section id="shadowing-tab" class="tab-content" role="tabpanel">
+                    <h1>Find a professional to shadow</h1>
+                    <p>Explore opportunities to learn from healthcare professionals.</p>
+
+                    <div class="sub-tabs">
+                        <div class="sub-tab-buttons">
+                            <button type="button" class="sub-tab active" data-panel="shadowing-opportunities">
+                                Opportunities
+                            </button>
+                            <button type="button" class="sub-tab" data-panel="shadowing-applications">
+                                Applications
+                            </button>
+                        </div>
+
+                        <div id="shadowing-opportunities" class="sub-tab-panel">
+                            <h3>Shadowing Opportunities</h3>
+                            <p>Available shadowing opportunities will appear here.</p>
+                        </div>
+
+                        <div id="shadowing-applications" class="sub-tab-panel" hidden>
+                            <h3>My Applications</h3>
+                            <p>Your shadowing applications will appear here.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- POINTS -->
+                <section id="points-tab" class="tab-content" role="tabpanel">
+                    <h1>Your points and rewards</h1>
+                    <p>Track your progress and explore available rewards.</p>
+
+                    <div class="sub-tabs">
+                        <div class="sub-tab-buttons">
+                            <button type="button" class="sub-tab active" data-panel="points-balance">
+                                My Points
+                            </button>
+                            <button type="button" class="sub-tab" data-panel="points-rewards">
+                                Rewards
+                            </button>
+                        </div>
+
+                        <div id="points-balance" class="sub-tab-panel">
+                            <h3>My Points</h3>
+                            <p>Your points balance will appear here.</p>
+                        </div>
+
+                        <div id="points-rewards" class="sub-tab-panel" hidden>
+                            <h3>Available Rewards</h3>
+                            <p>Rewards will appear here when they are available.</p>
+                        </div>
+                    </div>
                 </section>
             </main>
         </div>
     </div>
 
-    <!-- Makes buttons functional -->
+    <!-- Switch the main category tabs -->
     <script>
-        const tab_buttons = document.querySelectorAll('.nav-tab');
-        const tab_contents = document.querySelectorAll('.tab-content');
+        const tabButtons = document.querySelectorAll('.nav-tab');
+        const tabContents = document.querySelectorAll('main > .tab-content');
 
-        tab_buttons.forEach(butn =>
-        {
-            butn.addEventListener('click', () =>
-            {
-                tab_buttons.forEach(btn => btn.classList.remove('active'));
-                tab_contents.forEach(cont => cont.classList.remove('active'));
+        tabButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                tabButtons.forEach((tab) => tab.classList.remove('active'));
+                tabContents.forEach((content) => content.classList.remove('active'));
 
-                butn.classList.add('active');
-                document.getElementById(butn.dataset.target).classList.add('active');
+                button.classList.add('active');
+                document.getElementById(button.dataset.target).classList.add('active');
             });
         });
     </script>
 
-    <!-- Makes sure only verified users can access associated account type pages -->
+    <!-- Participant dashboard: check sign-in and role first, then load events -->
     <script type="module">
         import { supabase } from '../js/supabaseClient.js'
-    
-        const REQUIRED_TYPE = 'user'
-    
-        const { data: { session } } = await supabase.auth.getSession()
-    
-        if (!session)
+
+        const REQUIRED_ROLE = 'participant'
+        const list = document.getElementById('event-list')
+
+        function goHome()
         {
-            window.location.href = '../index.html'
+            // replace() keeps this page out of the back-button history
+            window.location.replace('../index.html')
         }
-        else
+
+        async function loadEvents()
         {
+            const { data: events, error } = await supabase
+                .from('activities')
+                .select('*')
+                .gte('event_date', new Date().toISOString())
+                .order('event_date')
+
+            if (error)
+            {
+                list.textContent = 'Could not load events'
+                return
+            }
+
+            if (events.length === 0)
+            {
+                list.textContent = 'No upcoming events'
+                return
+            }
+
+            for (const x of events)
+            {
+                const card = document.createElement('div')
+
+                const title = document.createElement('h3')
+                title.textContent = x.title
+
+                const when = document.createElement('p')
+                when.textContent = new Date(x.event_date).toLocaleString() + (x.location ? ' at ' + x.location : '')
+
+                const who = document.createElement('p')
+                const syntax = [] /* Makes sure syntax in event listing is correct if there isn't a sponsor or non-profit associated yet */
+                if (x.nonprofit_name)
+                {
+                    syntax.push('Hosted by ' + x.nonprofit_name)
+                }
+                if (x.sponsor_name)
+                {
+                    syntax.push('Sponsored by ' + x.sponsor_name)
+                }
+                who.textContent = syntax.join(', ')
+
+                const desc = document.createElement('p')
+                desc.textContent = x.description ?? ''
+
+                card.append(title, when, who, desc)
+                list.append(card)
+            }
+        }
+
+        async function init()
+        {
+            const { data: { session } } = await supabase.auth.getSession()
+
+            if (!session)
+            {
+                goHome()
+                return
+            }
+
             const { data: profile, error: profileError } = await supabase
                 .from('profiles')
                 .select('role')
                 .eq('user_id', session.user.id)
                 .single()
-    
-            if (error || !profile || profile.role !== 'participant')
+
+            if (profileError || !profile || profile.role !== REQUIRED_ROLE)
             {
-                window.location.href = '../index.html'
+                goHome()
+                return
             }
+
+            await loadEvents()
         }
+
+        init()
     </script>
+    
+    <script src="../js/design.js" defer></script>
 </body>
 </html>

@@ -82,7 +82,7 @@
                 .eq('user_id', session.user.id)
                 .single()
     
-            if (error || !profile || profile.role !== 'admin')
+            if (profileError || !profile || profile.role !== 'admin')
             {
                 window.location.href = '../index.html'
             }
