@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sponsor Landing Page</title>
+    <title>Non-Profit Landing Page</title>
     <link rel="stylesheet" href="../css/P3_styling.css">
 </head>
 <body>
@@ -20,6 +20,7 @@
                 <button class = "nav-tab active" role = "tab" data-target = "events-tab">Events</button>
                 <button class = "nav-tab" role = "tab" data-target = "prevention-tab">Prevention</button>
                 <button class = "nav-tab" role = "tab" data-target = "reporting-tab">Reporting</button>
+                <button class = "nav-tab" role = "tab" data-target = "event-creation-tab">Create</button>
             </nav>
         
             <!-- Content of each tab -->
@@ -38,10 +39,56 @@
                     <h1>Reporting Dashboard</h1>
                     <p>Review data and statistics from your events</p>
                 </section>
+
+                <section id = "event-creation-tab" class = "tab-content" role = "tabpanel">
+                    <h1>Create an Event</h1>
+
+                    <form id="event-creation-form">
+                    <p><label>Event name: <input id="title" required></label></p>
+                    <p><label>Date and time: <input type="datetime-local" id="event-date" required></label></p>
+                    <p><label>Location: <input id="location" required></label></p>
+                    <p><label>Sponsor: <input id="sponsor"></label></p>
+                    <p><label>Non-profit: <input id="nonprofit" required></label></p>
+                    <p><label>Description: <textarea id="description"></textarea></label></p>
+                    <p id="event-message"></p>
+                    <button type="submit" class="form-button">Create Event</button>
+                    </form>
+                </section>
             </main>
         </div>
     </div>
 
+    <!-- Allows submission of events to backend -->
+    <script type="module">
+        import { supabase } from '../js/supabaseClient.js'
+    
+        document.getElementById('event-creation-form').addEventListener('submit', async (e) => {
+            e.preventDefault()
+            const response = document.getElementById('event-message')
+    
+            const { error } = await supabase.from('activities').insert(
+            {
+                title: document.getElementById('title').value,
+                event_date: new Date(document.getElementById('event-date').value).toISOString(),
+                location: document.getElementById('location').value,
+                sponsor_name: document.getElementById('sponsor').value || null,
+                nonprofit_name: document.getElementById('nonprofit').value,
+                description: document.getElementById('description').value || null
+            })
+    
+            if (error)
+            {
+                response.style.color = 'red'
+                response.textContent = error.message
+                return
+            }
+    
+            response.style.color = 'green'
+            response.textContent = 'Event created!'
+            e.target.reset()
+        })
+    </script>
+    
     <!-- Makes buttons functional -->
     <script>
         const tab_buttons = document.querySelectorAll('.nav-tab');
@@ -64,7 +111,7 @@
     <script type="module">
         import { supabase } from '../js/supabaseClient.js'
     
-        const REQUIRED_TYPE = 'non-profit'
+        const REQUIRED_TYPE = 'nonprofit'
     
         const { data: { session } } = await supabase.auth.getSession()
     
@@ -80,7 +127,7 @@
                 .eq('user_id', session.user.id)
                 .single()
     
-            if (error || !profile || profile.role !== 'nonprofit')
+            if (profileError || !profile || profile.role !== 'nonprofit')
             {
                 window.location.href = '../index.html'
             }

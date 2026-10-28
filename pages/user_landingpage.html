@@ -53,8 +53,8 @@
             <main>
                 <!-- EVENTS -->
                 <section id="events-tab" class="tab-content active" role="tabpanel">
-                    <h1>See what events are happening in your community</h1>
-                    <p>Find opportunities to participate and make an impact.</p>
+                    <h1>See What Events Are Happening In Your Community</h1>
+                    <p>Know when and where to be to participate in events</p>
 
                     <div class="sub-tabs">
                         <div class="sub-tab-buttons">
@@ -67,8 +67,8 @@
                         </div>
 
                         <div id="events-upcoming" class="sub-tab-panel">
-                            <h3>Upcoming Events</h3>
-                            <p>Upcoming community events will appear here.</p>
+                            <!-- Pulls events from backend -->
+                            <div id="event-list"></div>
                         </div>
 
                         <div id="events-completed" class="sub-tab-panel" hidden>
@@ -76,6 +76,16 @@
                             <p>Your completed events will appear here.</p>
                         </div>
                     </div>
+                </section>
+                
+                <section id="prevention-tab" class="tab-content" role="tabpanel">
+                    <h1>Close The Gap Between Prevention And Treatment</h1>
+                    <p>Learn about different illnesses, conditions, and diseases</p>
+                </section>
+        
+                <section id="shadowing-tab" class="tab-content" role="tabpanel">
+                    <h1>Find A Professional To Shadow</h1>
+                    <p>See vetted postings from professionals willing to take on a shadow</p>
                 </section>
 
                 <!-- PREVENTION -->
@@ -163,38 +173,85 @@
     </div>
 
     <!-- Switch the main category tabs -->
-    <script>
-        const tabButtons = document.querySelectorAll('.nav-tab');
-        const tabContents = document.querySelectorAll('main > .tab-content');
-
-        tabButtons.forEach((button) => {
-            button.addEventListener('click', () => {
-                tabButtons.forEach((tab) => tab.classList.remove('active'));
-                tabContents.forEach((content) => content.classList.remove('active'));
-
-                button.classList.add('active');
-                document.getElementById(button.dataset.target).classList.add('active');
-            });
-        });
+    
+    <!-- Imports events from backend ordered by date -->
+    <script type="module">
+        import { supabase } from '../js/supabaseClient.js'
+    
+        const list = document.getElementById('event-list')
+    
+        const { data: events, error } = await supabase
+            .from('activities')
+            .select('*')
+            .gte('event_date', new Date().toISOString())
+            .order('event_date')
+    
+        if (error)
+        {
+            list.textContent = 'Could not load events'
+        }
+        else if (events.length === 0)
+        {
+            list.textContent = 'No upcoming events'
+        }
+        else
+        {
+            for (const x of events)
+            {
+                const card = document.createElement('div')
+    
+                const title = document.createElement('h3')
+                title.textContent = x.title
+    
+                const when = document.createElement('p')
+                when.textContent = new Date(x.event_date).toLocaleString() + ' at ' + x.location
+    
+                const who = document.createElement('p')
+                const syntax = [] /* Makes sure syntax in event listing is correct if there isn't a sponsor or non-profit associated yet */
+                if (x.nonprofit_name)
+                {
+                    syntax.push('Hosted by ' + x.nonprofit_name)
+                }
+                if (x.sponsor_name)
+                {
+                    syntax.push('Sponsored by ' + x.sponsor_name)
+                }
+                who.textContent = syntax.join(', ')
+    
+                const desc = document.createElement('p')
+                desc.textContent = x.description ?? ''
+    
+                card.append(title, when, who, desc)
+                list.append(card)
+            }
+        }
     </script>
+    
+    <!-- Makes buttons functional -->
 
     <!-- Check that the signed-in account has the participant role -->
     <script type="module">
-        import { supabase } from '../js/supabaseClient.js';
-
-        const { data: { session } } = await supabase.auth.getSession();
-
-        if (!session) {
-            window.location.href = '../index.html';
-        } else {
+        import { supabase } from '../js/supabaseClient.js'
+    
+        const REQUIRED_TYPE = 'participant'
+    
+        const { data: { session } } = await supabase.auth.getSession()
+    
+        if (!session)
+        {
+            window.location.href = '../index.html'
+        }
+        else
+        {
             const { data: profile, error: profileError } = await supabase
                 .from('profiles')
                 .select('role')
                 .eq('user_id', session.user.id)
-                .single();
-
-            if (profileError || !profile || profile.role !== 'participant') {
-                window.location.href = '../index.html';
+                .single()
+    
+            if (profileError || !profile || profile.role !== 'participant')
+            {
+                window.location.href = '../index.html'
             }
         }
     </script>
