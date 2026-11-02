@@ -9,20 +9,32 @@
 
 <body class="dashboard-page">
     <div class="content-wrap">
-        <header>
-            <a class="P3_banner" href="../index.html">
-                <span class="brand-mark">P3<span>+</span></span>
-                <span>
-                    Medwell
-                    <span class="brand-sub">PARTICIPATE. PREVENT. PROGRESS.</span>
-                </span>
-            </a>
+                    <header>
+                <a class="P3_banner" href="user_landingpage.html">
+                    <span class="brand-mark">P3<span>+</span></span>
+                    <span>
+                        Medwell
+                        <span class="brand-sub">PARTICIPATE. PREVENT. PROGRESS.</span>
+                    </span>
+                </a>
 
-            <span class="header-note">Healthier communities start here</span>
-            <button type="button" class="theme-toggle" aria-pressed="false">
-    🌙 Dark mode
-</button>
-        </header>
+                <span class="header-note">Healthier Communities start here</span>
+
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <button type="button" class="theme-toggle" aria-pressed="false">
+                        🌙 Dark mode
+                    </button>
+
+                    <!-- New Settings Dropdown -->
+                    <div class="settings-menu">
+                        <button class="settings-btn">⚙️ Settings</button>
+                        <div class="settings-dropdown">
+                            <a href="#">My Profile</a>
+                            <a href="#" id="logout-btn">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
 
         <div class="below-banner-content-wrap">
             <div class="dashboard-intro">
@@ -180,94 +192,80 @@
 
     <!-- Participant dashboard: check sign-in and role first, then load events -->
     <script type="module">
-        import { supabase } from '../js/supabaseClient.js'
+    import { supabase } from '../js/supabaseClient.js';
+    import { logout, checkUserRole } from '../js/auth.js';
 
-        const REQUIRED_ROLE = 'participant'
-        const list = document.getElementById('event-list')
+    async function init() {
+        const user = await checkUserRole('participant');
+        if (!user) return;
 
-        function goHome()
-        {
-            // replace() keeps this page out of the back-button history
-            window.location.replace('../index.html')
-        }
+        // Bind Logout Button (using optional chaining in case the ID is missing)
+        document.getElementById('logout-btn')?.addEventListener('click', logout);
 
-        async function loadEvents()
-        {
-            const { data: events, error } = await supabase
-                .from('activities')
-                .select('*')
-                .gte('event_date', new Date().toISOString())
-                .order('event_date')
+        // Settings Dropdown Click Logic
+        const settingsBtn = document.querySelector('.settings-btn');
+        const settingsDropdown = document.querySelector('.settings-dropdown');
 
-            if (error)
-            {
-                list.textContent = 'Could not load events'
-                return
-            }
+        if (settingsBtn && settingsDropdown) {
+            settingsBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); 
+                settingsDropdown.classList.toggle('show');
+            });
 
-            if (events.length === 0)
-            {
-                list.textContent = 'No upcoming events'
-                return
-            }
-
-            for (const x of events)
-            {
-                const card = document.createElement('div')
-
-                const title = document.createElement('h3')
-                title.textContent = x.title
-
-                const when = document.createElement('p')
-                when.textContent = new Date(x.event_date).toLocaleString() + (x.location ? ' at ' + x.location : '')
-
-                const who = document.createElement('p')
-                const syntax = [] /* Makes sure syntax in event listing is correct if there isn't a sponsor or non-profit associated yet */
-                if (x.nonprofit_name)
-                {
-                    syntax.push('Hosted by ' + x.nonprofit_name)
+            document.addEventListener('click', (e) => {
+                if (!settingsDropdown.contains(e.target)) {
+                    settingsDropdown.classList.remove('show');
                 }
-                if (x.sponsor_name)
-                {
-                    syntax.push('Sponsored by ' + x.sponsor_name)
-                }
-                who.textContent = syntax.join(', ')
-
-                const desc = document.createElement('p')
-                desc.textContent = x.description ?? ''
-
-                card.append(title, when, who, desc)
-                list.append(card)
-            }
+            });
         }
 
-        async function init()
-        {
-            const { data: { session } } = await supabase.auth.getSession()
+        // Load Events
+        const list = document.getElementById('event-list');
+        if (!list) return; // Exit if this page doesn't have an event list
 
-            if (!session)
-            {
-                goHome()
-                return
-            }
+        const { data: events, error } = await supabase
+            .from('activities')
+            .select('activity_id, title, description, event_date, location, nonprofit_name, sponsor_name')
+            .gte('event_date', new Date().toISOString())
+            .order('event_date');
 
-            const { data: profile, error: profileError } = await supabase
-                .from('profiles')
-                .select('role')
-                .eq('user_id', session.user.id)
-                .single()
-
-            if (profileError || !profile || profile.role !== REQUIRED_ROLE)
-            {
-                goHome()
-                return
-            }
-
-            await loadEvents()
+        if (error) { 
+            console.error("Supabase error:", error); // For debugging
+            list.textContent = 'Could not load events'; 
+            return; 
+        }
+        
+        if (events.length === 0) { 
+            list.textContent = 'No upcoming events'; 
+            return; 
         }
 
-        init()
-    </script>
+        for (const x of events) {
+            const card = document.createElement('div');
+            
+            const title = document.createElement('h3'); 
+            title.textContent = x.title;
+            
+            const when = document.createElement('p');
+            when.textContent = new Date(x.event_date).toLocaleString() + (x.location ? ' at ' + x.location : '');
+            
+            const who = document.createElement('p');
+            const syntax = []; 
+            if (x.nonprofit_name) syntax.push('Hosted by ' + x.nonprofit_name);
+            if (x.sponsor_name) syntax.push('Sponsored by ' + x.sponsor_name);
+            who.textContent = syntax.join(', ');
+            
+            const desc = document.createElement('p'); 
+            desc.textContent = x.description ?? '';
+            
+            card.append(title, when, who, desc);
+            list.append(card);
+        }
+    }
+
+    // Call the function to start everything
+    init();
+</script>
     
     <script src="../js/design.js" defer></script>
 </body>

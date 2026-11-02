@@ -218,6 +218,9 @@ const emptyMessages = {
 document
   .querySelectorAll('.dashboard-page section.tab-content')
   .forEach((panel) => {
+    
+    if (panel.id === 'event-creation-tab' || panel.id === 'events-tab') return;
+
     const message = emptyMessages[panel.id] || {
       title: 'Good things are ahead',
       text: 'This section is ready for content. There is nothing to display yet.'
