@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -66,6 +66,7 @@
                         <p><label>Date and time: <input type="datetime-local" id="event-date" required></label></p>
                         <p><label>Location: <input id="location" required></label></p>
                         <p><label>Sponsor (Optional): <input id="sponsor"></label></p>
+                        <p><label>Non-profit Name: <input id="nonprofit" required></label></p>
                         <p><label>Description: <textarea id="description"></textarea></label></p>
                         <p id="event-message"></p>
                         <button type="submit" class="form-button">Create Event</button>
@@ -167,6 +168,7 @@
                     event_date: new Date(document.getElementById('event-date').value).toISOString(),
                     location: document.getElementById('location').value,
                     sponsor_name: document.getElementById('sponsor').value || null,
+                    nonprofit_name: document.getElementById('nonprofit').value,
                     description: document.getElementById('description').value || null
                 });
 
