@@ -804,3 +804,61 @@ body.dark-mode select
     color: #e8f1f2; 
     border: 1px solid #49656c; 
 }
+
+/* Settings Dropdown */
+
+.settings-menu { 
+    position: relative; 
+    display: inline-block; 
+}
+
+.settings-btn {
+    padding: 9px 14px; 
+    border: 1px solid var(--line); 
+    border-radius: 9px;
+    background: #fff; 
+    color: var(--ink); 
+    font-size: 13px; 
+    font-weight: 600; 
+    cursor: pointer;
+}
+
+body.dark-mode .settings-btn { 
+    background: #203b45; 
+    color: #e8f1f2; 
+    border-color: #49656c; 
+}
+
+.settings-dropdown {
+    display: none; 
+    position: absolute; 
+    right: 0; 
+    top: 100%; 
+    margin-top: 5px; /* Space between button and menu */
+    background-color: var(--paper); 
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.15);
+    z-index: 100;
+    border: 1px solid var(--line); 
+    border-radius: 9px; 
+    overflow: hidden;
+}
+
+/* Toggled by JavaScript */
+.settings-dropdown.show {
+    display: block;
+}
+
+.settings-dropdown a {
+    color: var(--ink); 
+    padding: 12px 16px; 
+    text-decoration: none;
+    display: block; 
+    font-size: 14px; 
+    font-weight: 500;
+}
+
+.settings-dropdown a:hover { 
+    background-color: var(--navy); 
+    color: var(--teal); 
+}

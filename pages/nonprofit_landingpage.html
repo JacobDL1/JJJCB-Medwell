@@ -1,138 +1,192 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Non-Profit Landing Page</title>
+    <title>Non-Profit Dashboard | P3</title>
     <link rel="stylesheet" href="../css/P3_styling.css">
 </head>
-<body>
-    <div class = "content-wrap">
-        <!-- Puts a static banner accros the top of the screen -->
+<body class="dashboard-page">
+    <div class="content-wrap">
         <header>
-            <div class = "P3_banner">P3</div>
+            <a class="P3_banner" href="nonprofit_landingpage.html">
+                <span class="brand-mark">P3<span>+</span></span>
+                <span>
+                    Medwell
+                    <span class="brand-sub">PARTICIPATE. PREVENT. PROGRESS.</span>
+                </span>
+            </a>
+
+            <span class="header-note">Non-Profit Portal</span>
+            
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <button type="button" class="theme-toggle" aria-pressed="false">
+                    🌙 Dark mode
+                </button>
+
+                <div class="settings-menu">
+                    <button class="settings-btn">⚙️ Settings</button>
+                    <div class="settings-dropdown">
+                        <a href="#">My Profile</a>
+                        <a href="#" id="logout-btn">Logout</a>
+                    </div>
+                </div>
+            </div>
         </header>
 
-        <!-- class made to resolve issue with side border extending into banner -->
-        <div class = "below-banner-content-wrap">
-            <!-- Creates tabs for landing page navigation -->
+        <div class="below-banner-content-wrap">
             <nav class="tabs" role="tablist">
-                <button class = "nav-tab active" role = "tab" data-target = "events-tab">Events</button>
-                <button class = "nav-tab" role = "tab" data-target = "prevention-tab">Prevention</button>
-                <button class = "nav-tab" role = "tab" data-target = "reporting-tab">Reporting</button>
-                <button class = "nav-tab" role = "tab" data-target = "event-creation-tab">Create</button>
+                <button class="nav-tab active" role="tab" data-target="events-tab">Events</button>
+                <button class="nav-tab" role="tab" data-target="prevention-tab">Prevention</button>
+                <button class="nav-tab" role="tab" data-target="reporting-tab">Reporting</button>
+                <button class="nav-tab" role="tab" data-target="event-creation-tab">Create</button>
             </nav>
         
-            <!-- Content of each tab -->
             <main>
-                <section id = "events-tab" class = "tab-content active" role = "tabpanel">
-                    <h1>See All Your Events</h1>
-                    <p>Manage your events</p>
+                <section id="events-tab" class="tab-content active" role="tabpanel">
+                    <h1>Manage Your Events</h1>
+                    <p>See and manage the events you have created.</p>
+                    <div id="nonprofit-event-list"></div>
                 </section>
               
-                <section id = "prevention-tab" class = "tab-content" role = "tabpanel">
+                <section id="prevention-tab" class="tab-content" role="tabpanel">
                     <h1>See All Your Prevention Materials</h1>
                     <p>Manage your prevention materials</p>
                 </section>
               
-                <section id = "reporting-tab" class = "tab-content" role = "tabpanel">
+                <section id="reporting-tab" class="tab-content" role="tabpanel">
                     <h1>Reporting Dashboard</h1>
                     <p>Review data and statistics from your events</p>
                 </section>
 
-                <section id = "event-creation-tab" class = "tab-content" role = "tabpanel">
+                <section id="event-creation-tab" class="tab-content" role="tabpanel">
                     <h1>Create an Event</h1>
-
                     <form id="event-creation-form">
-                    <p><label>Event name: <input id="title" required></label></p>
-                    <p><label>Date and time: <input type="datetime-local" id="event-date" required></label></p>
-                    <p><label>Location: <input id="location" required></label></p>
-                    <p><label>Sponsor: <input id="sponsor"></label></p>
-                    <p><label>Non-profit: <input id="nonprofit" required></label></p>
-                    <p><label>Description: <textarea id="description"></textarea></label></p>
-                    <p id="event-message"></p>
-                    <button type="submit" class="form-button">Create Event</button>
+                        <p><label>Event name: <input id="title" required></label></p>
+                        <p><label>Date and time: <input type="datetime-local" id="event-date" required></label></p>
+                        <p><label>Location: <input id="location" required></label></p>
+                        <p><label>Sponsor (Optional): <input id="sponsor"></label></p>
+                        <p><label>Description: <textarea id="description"></textarea></label></p>
+                        <p id="event-message"></p>
+                        <button type="submit" class="form-button">Create Event</button>
                     </form>
                 </section>
             </main>
         </div>
     </div>
 
-    <!-- Allows submission of events to backend -->
-    <script type="module">
-        import { supabase } from '../js/supabaseClient.js'
-    
-        document.getElementById('event-creation-form').addEventListener('submit', async (e) => {
-            e.preventDefault()
-            const response = document.getElementById('event-message')
-    
-            const { error } = await supabase.from('activities').insert(
-            {
-                title: document.getElementById('title').value,
-                event_date: new Date(document.getElementById('event-date').value).toISOString(),
-                location: document.getElementById('location').value,
-                sponsor_name: document.getElementById('sponsor').value || null,
-                nonprofit_name: document.getElementById('nonprofit').value,
-                description: document.getElementById('description').value || null
-            })
-    
-            if (error)
-            {
-                response.style.color = 'red'
-                response.textContent = error.message
-                return
+        <script type="module">
+        import { supabase } from '../js/supabaseClient.js';
+        import { logout, checkUserRole } from '../js/auth.js';
+
+        async function init() {
+            // Auth check
+            const user = await checkUserRole('nonprofit');
+            if (!user) return;
+
+            // Settings and Logout
+            document.getElementById('logout-btn')?.addEventListener('click', logout);
+
+            const settingsBtn = document.querySelector('.settings-btn');
+            const settingsDropdown = document.querySelector('.settings-dropdown');
+            if (settingsBtn && settingsDropdown) {
+                settingsBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); 
+                    settingsDropdown.classList.toggle('show');
+                });
+                document.addEventListener('click', (e) => {
+                    if (!settingsDropdown.contains(e.target)) settingsDropdown.classList.remove('show');
+                });
             }
-    
-            response.style.color = 'green'
-            response.textContent = 'Event created!'
-            e.target.reset()
-        })
-    </script>
-    
-    <!-- Makes buttons functional -->
-    <script>
-        const tab_buttons = document.querySelectorAll('.nav-tab');
-        const tab_contents = document.querySelectorAll('.tab-content');
 
-        tab_buttons.forEach(butn =>
-        {
-            butn.addEventListener('click', () =>
-            {
-                tab_buttons.forEach(btn => btn.classList.remove('active'));
-                tab_contents.forEach(cont => cont.classList.remove('active'));
-
-                butn.classList.add('active');
-                document.getElementById(butn.dataset.target).classList.add('active');
+            // Tab switching
+            const tab_buttons = document.querySelectorAll('.nav-tab');
+            const tab_contents = document.querySelectorAll('.tab-content');
+            
+            tab_buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active from all
+                    tab_buttons.forEach(b => b.classList.remove('active'));
+                    tab_contents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active to clicked
+                    btn.classList.add('active');
+                    document.getElementById(btn.dataset.target).classList.add('active');
+                });
             });
-        });
+
+            // Fetch non-profit events
+            const list = document.getElementById('nonprofit-event-list');
+            async function loadMyEvents() {
+                list.textContent = 'Loading events...';
+                
+                const { data: events, error } = await supabase
+                    .from('activities')
+                    .select('title, event_date, location, point_value')
+                    .eq('nonprofit_id', user.id) 
+                    .order('event_date', { ascending: true });
+
+                if (error) {
+                    console.error(error);
+                    list.textContent = 'Could not load your events.';
+                    return;
+                }
+                if (events.length === 0) {
+                    list.textContent = 'You have not created any events yet.';
+                    return;
+                }
+
+                list.innerHTML = ''; 
+                for (const x of events) {
+                    const card = document.createElement('div');
+                    card.style.border = '1px solid var(--line)';
+                    card.style.padding = '10px';
+                    card.style.marginBottom = '10px';
+                    card.style.borderRadius = '8px';
+
+                    const title = document.createElement('h3'); title.textContent = x.title;
+                    const when = document.createElement('p'); when.textContent = new Date(x.event_date).toLocaleString() + (x.location ? ' at ' + x.location : '');
+                    const pts = document.createElement('p'); pts.textContent = 'Points: ' + (x.point_value || 0);
+                    
+                    card.append(title, when, pts);
+                    list.append(card);
+                }
+            }
+            
+            loadMyEvents();
+
+            // Create event form
+            document.getElementById('event-creation-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const response = document.getElementById('event-message');
+                response.style.color = 'black';
+                response.textContent = 'Creating event...';
+
+                const { error } = await supabase.from('activities').insert({
+                    title: document.getElementById('title').value,
+                    event_date: new Date(document.getElementById('event-date').value).toISOString(),
+                    location: document.getElementById('location').value,
+                    sponsor_name: document.getElementById('sponsor').value || null,
+                    description: document.getElementById('description').value || null
+                });
+
+                if (error) {
+                    response.style.color = 'red';
+                    response.textContent = error.message;
+                    return;
+                }
+
+                response.style.color = 'green';
+                response.textContent = 'Event created successfully!';
+                e.target.reset();
+                
+                loadMyEvents(); // Refresh the list instantly
+            });
+        }
+
+        init();
     </script>
 
-    <!-- Makes sure only verified users can access associated account type pages -->
-    <script type="module">
-        import { supabase } from '../js/supabaseClient.js'
-    
-        const REQUIRED_TYPE = 'nonprofit'
-    
-        const { data: { session } } = await supabase.auth.getSession()
-    
-        if (!session)
-        {
-            window.location.href = '../index.html'
-        }
-        else
-        {
-            const { data: profile, error: profileError } = await supabase
-                .from('profiles')
-                .select('role')
-                .eq('user_id', session.user.id)
-                .single()
-    
-            if (profileError || !profile || profile.role !== 'nonprofit')
-            {
-                window.location.href = '../index.html'
-            }
-        }
-    </script>
     <script src="../js/design.js" defer></script>
 </body>
 </html>
