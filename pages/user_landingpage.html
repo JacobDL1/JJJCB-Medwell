@@ -135,6 +135,7 @@
                         <div id="shadowing-opportunities" class="sub-tab-panel">
                             <h3>Shadowing Opportunities</h3>
                             <p>Available shadowing opportunities will appear here.</p>
+                            <div id="post-list"></div>
                         </div>
 
                         <div id="shadowing-applications" class="sub-tab-panel" hidden>
@@ -254,6 +255,41 @@
             if (x.nonprofit_name) syntax.push('Hosted by ' + x.nonprofit_name);
             if (x.sponsor_name) syntax.push('Sponsored by ' + x.sponsor_name);
             who.textContent = syntax.join(', ');
+            
+            const desc = document.createElement('p'); 
+            desc.textContent = x.description ?? '';
+            
+            card.append(title, when, who, desc);
+            list.append(card);
+        }
+
+        //load posts
+        const list = document.getElementById('post-list');
+        if (!list) return; // Exit if this page doesn't have an event list
+
+        const { data: posts, error } = await supabase
+            .from('mentor_posts')
+            .select('post_id, title, mentor_name, location, description');
+
+        if (error) { 
+            console.error("Supabase error:", error); // For debugging
+            list.textContent = 'Could not load posts'; 
+            return; 
+        }
+        
+        if (posts.length === 0) { 
+            list.textContent = 'No upcoming posts'; 
+            return; 
+        }
+
+        for (const x of posts) {
+            const card = document.createElement('div');
+            
+            const title = document.createElement('h3'); 
+            title.textContent = x.title;
+            
+            const who = document.createElement('p');
+            who.textContent = x.mentor_name;
             
             const desc = document.createElement('p'); 
             desc.textContent = x.description ?? '';
