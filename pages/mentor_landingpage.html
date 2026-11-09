@@ -16,17 +16,30 @@
             <nav class="tabs" role="tablist">
                 <button class="nav-tab active" data-target="postings-tab">Postings</button>
                 <button class="nav-tab" data-target="applicants-tab">Applicants</button>
+                <button class="nav-tab" role="tab" data-target="post-creation-tab">Create</button>
             </nav>
 
             <main>
                 <section id="postings-tab" class="tab-content active">
                     <h1>Your Shadowing Postings</h1>
                     <p>Create and manage shadowing opportunities</p>
+                    <div id="mentor-post-list"></div>
                 </section>
 
                 <section id="applicants-tab" class="tab-content">
                     <h1>Your Applicants</h1>
                     <p>Review students who applied to shadow you</p>
+                </section>
+
+                <section id="post-creation-tab" class="tab-content" role="tabpanel">
+                    <h1>Create a Post</h1>
+                    <form id="post-creation-form">
+                        <p><label>Post title: <input id="title" required></label></p>
+                        <p><label>Location: <input id="location" required></label></p>
+                        <p><label>Description: <textarea id="description"></textarea></label></p>
+                        <p id="post-message"></p>
+                        <button type="submit" class="form-button">Create Event</button>
+                    </form>
                 </section>
             </main>
         </div>
@@ -52,6 +65,75 @@
 
         if (profile?.role !== 'mentor') window.location.href = '../index.html'
     </script>
+    
     <script src="../js/design.js" defer></script>
+
+    <!-- Script for imporitng all posts made by a mentor account and pushing post creation form info to the database -->
+    <script type="module">
+        //imporitng all posts made by a mentor account
+        const list = document.getElementById('mentor-post-list');
+        async function loadMyPosts() {
+            list.textContent = 'Loading posts...';
+                
+            const { data: posts, error } = await supabase
+                .from('mentor_posts')
+                .select('title, location, description')
+                .eq('mentor_id', user.id)});
+
+            if (error) {
+                console.error(error);
+                list.textContent = 'Could not load your posts.';
+                return;
+            }
+            if (posts.length === 0) {
+                list.textContent = 'You have not created any posts yet.';
+                return;
+            }
+
+            list.innerHTML = ''; 
+            for (const x of posts) {
+                const card = document.createElement('div');
+                card.style.border = '1px solid var(--line)';
+                card.style.padding = '10px';
+                card.style.marginBottom = '10px';
+                card.style.borderRadius = '8px';
+
+                const title = document.createElement('h3'); title.textContent = x.title;
+                const where = document.createElement('p'); where.textContent = (x.location ? ' at ' + x.location : '');
+                const description = document.createElement('p'); description.textContent = x.description;
+                    
+                card.append(title, where, description);
+                list.append(card);
+            }
+        }
+            
+        loadMyPosts();
+
+        //pushing post creation form info to the database
+        document.getElementById('post-creation-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const response = document.getElementById('post-message');
+            response.style.color = 'black';
+            response.textContent = 'Creating post...';
+
+            const { error } = await supabase.from('mentor_posts').insert({
+                title: document.getElementById('title').value,
+                location: document.getElementById('location').value,
+                description: document.getElementById('description').value || null
+            });
+
+            if (error) {
+                response.style.color = 'red';
+                response.textContent = error.message;
+                return;
+            }
+
+            response.style.color = 'green';
+            response.textContent = 'Event created successfully!';
+            e.target.reset();
+                
+            loadMyPosts(); // Refresh the list instantly
+        });
+    </script>
 </body>
 </html>
