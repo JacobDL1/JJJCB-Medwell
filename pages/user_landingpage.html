@@ -264,8 +264,8 @@
         }
 
         //load posts
-        const list = document.getElementById('post-list');
-        if (!list) return; // Exit if this page doesn't have an event list
+        const list2 = document.getElementById('post-list');
+        if (!list2) return; // Exit if this page doesn't have an event list
 
         const { data: posts, error } = await supabase
             .from('mentor_posts')
@@ -273,29 +273,29 @@
 
         if (error) { 
             console.error("Supabase error:", error); // For debugging
-            list.textContent = 'Could not load posts'; 
+            list2.textContent = 'Could not load posts'; 
             return; 
         }
         
         if (posts.length === 0) { 
-            list.textContent = 'No upcoming posts'; 
+            list2.textContent = 'No upcoming posts'; 
             return; 
         }
 
-        for (const x of posts) {
-            const card = document.createElement('div');
+        for (const y of posts) {
+            const card2 = document.createElement('div');
             
-            const title = document.createElement('h3'); 
-            title.textContent = x.title;
+            const title2 = document.createElement('h3'); 
+            title2.textContent = y.title;
             
-            const who = document.createElement('p');
-            who.textContent = x.mentor_name;
+            const who2 = document.createElement('p');
+            who2.textContent = y.mentor_name;
             
-            const desc = document.createElement('p'); 
-            desc.textContent = x.description ?? '';
+            const desc2 = document.createElement('p'); 
+            desc2.textContent = y.description ?? '';
             
-            card.append(title, when, who, desc);
-            list.append(card);
+            card2.append(title2, who2, desc2);
+            list2.append(card2);
         }
     }
 
