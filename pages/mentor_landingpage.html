@@ -34,11 +34,12 @@
                 <section id="post-creation-tab" class="tab-content" role="tabpanel">
                     <h1>Create a Post</h1>
                     <form id="post-creation-form">
+                        <p><label>Your name: <input id="name" required></label></p>
                         <p><label>Post title: <input id="title" required></label></p>
                         <p><label>Location: <input id="location" required></label></p>
                         <p><label>Description: <textarea id="description"></textarea></label></p>
                         <p id="post-message"></p>
-                        <button type="submit" class="form-button">Create Event</button>
+                        <button type="submit" class="form-button">Create Post</button>
                     </form>
                 </section>
             </main>
@@ -70,6 +71,11 @@
 
     <!-- Script for imporitng all posts made by a mentor account and pushing post creation form info to the database -->
     <script type="module">
+        import { supabase } from '../js/supabaseClient.js'
+
+        const { data: { session } } = await supabase.auth.getSession()
+        const user = session?.user
+        
         //imporitng all posts made by a mentor account
         const list = document.getElementById('mentor-post-list');
         async function loadMyPosts() {
@@ -78,7 +84,7 @@
             const { data: posts, error } = await supabase
                 .from('mentor_posts')
                 .select('title, location, description')
-                .eq('mentor_id', user.id)});
+                .eq('mentor_id', user.id);
 
             if (error) {
                 console.error(error);
@@ -117,6 +123,7 @@
             response.textContent = 'Creating post...';
 
             const { error } = await supabase.from('mentor_posts').insert({
+                mentor_name: document.getElementById('name').value,
                 title: document.getElementById('title').value,
                 location: document.getElementById('location').value,
                 description: document.getElementById('description').value || null
@@ -129,7 +136,7 @@
             }
 
             response.style.color = 'green';
-            response.textContent = 'Event created successfully!';
+            response.textContent = 'Post created successfully!';
             e.target.reset();
                 
             loadMyPosts(); // Refresh the list instantly
