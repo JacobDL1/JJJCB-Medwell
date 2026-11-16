@@ -9,7 +9,7 @@
 
 <body class="dashboard-page">
     <div class="content-wrap">
-                    <header>
+            <header>
                 <a class="P3_banner" href="user_landingpage.html">
                     <span class="brand-mark">P3<span>+</span></span>
                     <span>
@@ -25,7 +25,6 @@
                         🌙 Dark mode
                     </button>
 
-                    <!-- New Settings Dropdown -->
                     <div class="settings-menu">
                         <button class="settings-btn">⚙️ Settings</button>
                         <div class="settings-dropdown">
@@ -135,6 +134,7 @@
                         <div id="shadowing-opportunities" class="sub-tab-panel">
                             <h3>Shadowing Opportunities</h3>
                             <p>Available shadowing opportunities will appear here.</p>
+                            <div id="shadowing-list"></div>
                         </div>
 
                         <div id="shadowing-applications" class="sub-tab-panel" hidden>
@@ -192,80 +192,123 @@
 
     <!-- Participant dashboard: check sign-in and role first, then load events -->
     <script type="module">
-    import { supabase } from '../js/supabaseClient.js';
-    import { logout, checkUserRole } from '../js/auth.js';
-
-    async function init() {
-        const user = await checkUserRole('participant');
-        if (!user) return;
-
-        // Bind Logout Button (using optional chaining in case the ID is missing)
-        document.getElementById('logout-btn')?.addEventListener('click', logout);
-
-        // Settings Dropdown Click Logic
-        const settingsBtn = document.querySelector('.settings-btn');
-        const settingsDropdown = document.querySelector('.settings-dropdown');
-
-        if (settingsBtn && settingsDropdown) {
-            settingsBtn.addEventListener('click', (e) => {
-                e.stopPropagation(); 
-                settingsDropdown.classList.toggle('show');
-            });
-
-            document.addEventListener('click', (e) => {
-                if (!settingsDropdown.contains(e.target)) {
-                    settingsDropdown.classList.remove('show');
-                }
-            });
+        import { supabase } from '../js/supabaseClient.js';
+        import { logout, checkUserRole } from '../js/auth.js';
+    
+        async function init() {
+            const user = await checkUserRole('participant');
+    
+            // Bind Logout Button (using optional chaining in case the ID is missing)
+            document.getElementById('logout-btn')?.addEventListener('click', logout);
+    
+            // Settings Dropdown Click Logic
+            const settingsBtn = document.querySelector('.settings-btn');
+            const settingsDropdown = document.querySelector('.settings-dropdown');
+    
+            if (settingsBtn && settingsDropdown) {
+                settingsBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); 
+                    settingsDropdown.classList.toggle('show');
+                });
+    
+                document.addEventListener('click', (e) => {
+                    if (!settingsDropdown.contains(e.target)) {
+                        settingsDropdown.classList.remove('show');
+                    }
+                });
+            }
+    
+            // Load Events
+            const list = document.getElementById('event-list');
+    
+            const { data: events, error } = await supabase
+                .from('activities')
+                .select('activity_id, title, description, event_date, location, nonprofit_name, sponsor_name')
+                .gte('event_date', new Date().toISOString())
+                .order('event_date');
+    
+            if (error) { 
+                console.error("Supabase error:", error); // For debugging
+                list.textContent = 'Could not load events'; 
+                return; 
+            }
+            
+            if (events.length === 0) { 
+                list.textContent = 'No upcoming events'; 
+                return; 
+            }
+    
+            for (const x of events) {
+                const card = document.createElement('div');
+                
+                const title = document.createElement('h3'); 
+                title.textContent = x.title;
+                
+                const when = document.createElement('p');
+                when.textContent = new Date(x.event_date).toLocaleString() + (x.location ? ' at ' + x.location : '');
+                
+                const who = document.createElement('p');
+                const syntax = []; 
+                if (x.nonprofit_name) syntax.push('Hosted by ' + x.nonprofit_name);
+                if (x.sponsor_name) syntax.push('Sponsored by ' + x.sponsor_name);
+                who.textContent = syntax.join(', ');
+                
+                const desc = document.createElement('p'); 
+                desc.textContent = x.description ?? '';
+                
+                card.append(title, when, who, desc);
+                list.append(card);
+            }
         }
 
-        // Load Events
-        const list = document.getElementById('event-list');
-        if (!list) return; // Exit if this page doesn't have an event list
+        init();
+    </script>
 
-        const { data: events, error } = await supabase
-            .from('activities')
-            .select('activity_id, title, description, event_date, location, nonprofit_name, sponsor_name')
-            .gte('event_date', new Date().toISOString())
-            .order('event_date');
+    <!-- Load shadowing posts -->
+    <script type="module">
+    import { supabase } from '../js/supabaseClient.js';
+
+    async function loadShadowingPosts() {
+        const list = document.getElementById('shadowing-list');
+        if (!list) return; // Exit if this page doesn't have the shadowing tab
+
+        const { data: posts, error } = await supabase
+            .from('mentor_posts')
+            .select('post_id, title, mentor_name, location, description')
+            .order('post_id');
 
         if (error) { 
-            console.error("Supabase error:", error); // For debugging
-            list.textContent = 'Could not load events'; 
+            console.error("Supabase error:", error); 
+            list.textContent = 'Could not load posts'; 
             return; 
         }
         
-        if (events.length === 0) { 
-            list.textContent = 'No upcoming events'; 
-            return; 
+        if (posts.length === 0) { 
+            list.textContent = 'No shadowing posts yet'; 
+            return;
         }
 
-        for (const x of events) {
+        list.innerHTML = ''; // Clear "loading" text
+
+        for (const x of posts) {
             const card = document.createElement('div');
+            card.className = 'post-card';
             
             const title = document.createElement('h3'); 
             title.textContent = x.title;
             
-            const when = document.createElement('p');
-            when.textContent = new Date(x.event_date).toLocaleString() + (x.location ? ' at ' + x.location : '');
-            
             const who = document.createElement('p');
-            const syntax = []; 
-            if (x.nonprofit_name) syntax.push('Hosted by ' + x.nonprofit_name);
-            if (x.sponsor_name) syntax.push('Sponsored by ' + x.sponsor_name);
-            who.textContent = syntax.join(', ');
+            who.textContent = 'Dr. ' + x.mentor_name + (x.location ? ' at ' + x.location : '');
             
             const desc = document.createElement('p'); 
             desc.textContent = x.description ?? '';
             
-            card.append(title, when, who, desc);
+            card.append(title, who, desc);
             list.append(card);
         }
     }
-
-    // Call the function to start everything
-    init();
-</script>
+    loadShadowingPosts();
+    </script>
     
     <script src="../js/design.js" defer></script>
 </body>
