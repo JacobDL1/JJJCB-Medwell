@@ -140,11 +140,8 @@
                 list.innerHTML = ''; 
                 for (const x of events) {
                     const card = document.createElement('div');
-                    card.style.border = '1px solid var(--line)';
-                    card.style.padding = '10px';
-                    card.style.marginBottom = '10px';
-                    card.style.borderRadius = '8px';
-
+                    card.className = 'post-card';
+                    
                     const title = document.createElement('h3'); title.textContent = x.title;
                     const when = document.createElement('p'); when.textContent = new Date(x.event_date).toLocaleString() + (x.location ? ' at ' + x.location : '');
                     const pts = document.createElement('p'); pts.textContent = 'Points: ' + (x.point_value || 0);

@@ -862,3 +862,14 @@ body.dark-mode .settings-btn {
     background-color: var(--navy); 
     color: var(--teal); 
 }
+
+/* Prevents long words/strings from breaking out of the card */
+.post-card {
+    border: 1px solid var(--line);
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+}

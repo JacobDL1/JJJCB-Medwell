@@ -9,7 +9,7 @@
 
 <body class="dashboard-page">
     <div class="content-wrap">
-                    <header>
+            <header>
                 <a class="P3_banner" href="user_landingpage.html">
                     <span class="brand-mark">P3<span>+</span></span>
                     <span>
@@ -25,7 +25,6 @@
                         🌙 Dark mode
                     </button>
 
-                    <!-- New Settings Dropdown -->
                     <div class="settings-menu">
                         <button class="settings-btn">⚙️ Settings</button>
                         <div class="settings-dropdown">
@@ -135,7 +134,7 @@
                         <div id="shadowing-opportunities" class="sub-tab-panel">
                             <h3>Shadowing Opportunities</h3>
                             <p>Available shadowing opportunities will appear here.</p>
-                            <div id="post-list"></div>
+                            <div id="shadowing-list"></div>
                         </div>
 
                         <div id="shadowing-applications" class="sub-tab-panel" hidden>
@@ -267,9 +266,11 @@
 
     <!-- Load shadowing posts -->
     <script type="module">
-        import { supabase } from '../js/supabaseClient.js';
-        //load posts
-        const list = document.getElementById('post-list');
+    import { supabase } from '../js/supabaseClient.js';
+
+    async function loadShadowingPosts() {
+        const list = document.getElementById('shadowing-list');
+        if (!list) return; // Exit if this page doesn't have the shadowing tab
 
         const { data: posts, error } = await supabase
             .from('mentor_posts')
@@ -277,7 +278,7 @@
             .order('post_id');
 
         if (error) { 
-            console.error("Supabase error:", error); // For debugging
+            console.error("Supabase error:", error); 
             list.textContent = 'Could not load posts'; 
             return; 
         }
@@ -287,14 +288,17 @@
             return;
         }
 
+        list.innerHTML = ''; // Clear "loading" text
+
         for (const x of posts) {
             const card = document.createElement('div');
+            card.className = 'post-card';
             
             const title = document.createElement('h3'); 
             title.textContent = x.title;
             
             const who = document.createElement('p');
-            who.textContent = x.mentor_name;
+            who.textContent = 'Dr. ' + x.mentor_name + (x.location ? ' at ' + x.location : '');
             
             const desc = document.createElement('p'); 
             desc.textContent = x.description ?? '';
@@ -302,7 +306,9 @@
             card.append(title, who, desc);
             list.append(card);
         }
-</script>
+    }
+    loadShadowingPosts();
+    </script>
     
     <script src="../js/design.js" defer></script>
 </body>
