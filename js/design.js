@@ -219,7 +219,14 @@ document
   .querySelectorAll('.dashboard-page section.tab-content')
   .forEach((panel) => {
     
-    if (panel.id === 'event-creation-tab' || panel.id === 'events-tab' || panel.id === 'shadowing-tab' || panel.id === 'postings-tab' || panel.id === 'applicants-tab' || panel.id === 'sponsored-events-tab' || panel.id === 'reporting-tab' || panel.id === 'points-tab') return;
+    if (
+    panel.id === 'event-creation-tab' || 
+    panel.id === 'events-tab' || 
+    panel.id === 'shadowing-tab' || 
+    panel.id === 'postings-tab' || 
+    panel.id === 'post-creation-tab' || 
+    panel.id === 'applicants-tab'
+    ) return; 
 
     const message = emptyMessages[panel.id] || {
       title: 'Good things are ahead',

@@ -57,7 +57,6 @@
                 <section id="post-creation-tab" class="tab-content" role="tabpanel">
                     <h1>Create a Post</h1>
                     <form id="post-creation-form">
-                        <p><label>Your name: <input id="name" required></label></p>
                         <p><label>Post title: <input id="title" required></label></p>
                         <p><label>Location: <input id="location" required></label></p>
                         <p><label>Description: <textarea id="description"></textarea></label></p>
@@ -173,7 +172,6 @@
             response.textContent = 'Creating post...';
 
             const { error } = await supabase.from('mentor_posts').insert({
-                mentor_name: document.getElementById('name').value,
                 title: document.getElementById('title').value,
                 location: document.getElementById('location').value,
                 description: document.getElementById('description').value || null

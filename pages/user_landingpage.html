@@ -220,10 +220,15 @@
     
             // Load Events
             const list = document.getElementById('event-list');
-    
+
             const { data: events, error } = await supabase
                 .from('activities')
-                .select('activity_id, title, description, event_date, location, nonprofit_name, sponsor_name')
+                .select(`
+                    activity_id, title, description, event_date, location, point_value,
+                    profiles:nonprofit_id ( first_name, last_name ),
+                    organizations:org_id ( org_name ),
+                    sponsor_org:sponsor_org_id ( org_name )
+                `)
                 .gte('event_date', new Date().toISOString())
                 .order('event_date');
     
@@ -240,6 +245,7 @@
     
             for (const x of events) {
                 const card = document.createElement('div');
+                card.className = 'post-card';
                 
                 const title = document.createElement('h3'); 
                 title.textContent = x.title;
@@ -248,10 +254,11 @@
                 when.textContent = new Date(x.event_date).toLocaleString() + (x.location ? ' at ' + x.location : '');
                 
                 const who = document.createElement('p');
-                const syntax = []; 
-                if (x.nonprofit_name) syntax.push('Hosted by ' + x.nonprofit_name);
-                if (x.sponsor_name) syntax.push('Sponsored by ' + x.sponsor_name);
-                who.textContent = syntax.join(', ');
+                const hostName = x.profiles?.first_name ? `${x.profiles.first_name} ${x.profiles.last_name}` : 'A Host';
+                const orgName = x.organizations?.org_name ? ` at ${x.organizations.org_name}` : '';
+                const sponsorText = x.sponsor_org?.org_name ? ` (Sponsored by ${x.sponsor_org.org_name})` : '';
+
+                who.textContent = 'Hosted by ' + hostName + orgName + sponsorText;
                 
                 const desc = document.createElement('p'); 
                 desc.textContent = x.description ?? '';
@@ -274,8 +281,12 @@
 
         const { data: posts, error } = await supabase
             .from('mentor_posts')
-            .select('post_id, title, mentor_name, location, description')
-            .order('post_id');
+            .select(`
+            post_id, title, location, description,
+            profiles:mentor_id ( first_name, last_name ),
+            organizations:org_id ( org_name )
+            `)
+            .order('post_id', { ascending: false });
 
         if (error) { 
             console.error("Supabase error:", error); 
@@ -298,7 +309,17 @@
             title.textContent = x.title;
             
             const who = document.createElement('p');
-            who.textContent = 'Dr. ' + x.mentor_name + (x.location ? ' at ' + x.location : '');
+            
+            // Get the mentor's name from the joined profiles table
+            const mentorName = x.profiles?.first_name ? `Dr. ${x.profiles.first_name} ${x.profiles.last_name}` : 'A Mentor';
+            
+            // Get the organization name from the joined organizations table
+            const orgName = x.organizations?.org_name ? ` at ${x.organizations.org_name}` : '';
+            
+            // Combine them with the location
+            const locationStr = x.location ? ` (${x.location})` : '';
+            
+            who.textContent = mentorName + orgName + locationStr;
             
             const desc = document.createElement('p'); 
             desc.textContent = x.description ?? '';

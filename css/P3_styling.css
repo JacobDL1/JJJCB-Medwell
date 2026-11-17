@@ -873,3 +873,15 @@ body.dark-mode .settings-btn {
     word-wrap: break-word;
     word-break: break-word;
 }
+
+textarea {
+    width: 100%;
+    min-height: 100px;
+    resize: vertical;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-family: inherit;
+    background-color: transparent;
+    color: var(--ink);
+}
