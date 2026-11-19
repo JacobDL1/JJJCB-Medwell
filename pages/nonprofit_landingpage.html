@@ -65,8 +65,7 @@
                         <p><label>Event name: <input id="title" required></label></p>
                         <p><label>Date and time: <input type="datetime-local" id="event-date" required></label></p>
                         <p><label>Location: <input id="location" required></label></p>
-                        <p><label>Sponsor (Optional): <input id="sponsor"></label></p>
-                        <p><label>Non-profit Name: <input id="nonprofit" required></label></p>
+                        <p><label>Sponsor (Optional): <select id="sponsor-org"> <option value="">No Sponsor</option></select></label></p>
                         <p><label>Description: <textarea id="description"></textarea></label></p>
                         <p id="event-message"></p>
                         <button type="submit" class="form-button">Create Event</button>
@@ -153,6 +152,29 @@
             
             loadMyEvents();
 
+            async function loadSponsorOptions() {
+                const select = document.getElementById('sponsor-org');
+                if (!select) return;
+
+                const { data: orgs, error } = await supabase
+                    .from('organizations')
+                    .select('org_id, org_name');
+
+                if (error) {
+                    console.error("Error loading sponsors:", error);
+                    return;
+                }
+
+                for (const org of orgs) {
+                    const option = document.createElement('option');
+                    option.value = org.org_id;
+                    option.textContent = org.org_name;
+                    select.appendChild(option);
+                }
+            }
+
+            loadSponsorOptions();
+
             // Create event form
             document.getElementById('event-creation-form').addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -164,8 +186,7 @@
                     title: document.getElementById('title').value,
                     event_date: new Date(document.getElementById('event-date').value).toISOString(),
                     location: document.getElementById('location').value,
-                    sponsor_name: document.getElementById('sponsor').value || null,
-                    nonprofit_name: document.getElementById('nonprofit').value,
+                    sponsor_org_id: document.getElementById('sponsor-org').value || null,
                     description: document.getElementById('description').value || null
                 });
 

@@ -26,5 +26,9 @@ export async function checkUserRole(requiredRole) {
         return null;
     }
 
+    // attach the data to the user object so the pages can use it
+    user.org_id = profile.org_id;
+    user.role = profile.role;
+
     return user; 
 }
