@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinic QR Codes Response Form</title>
+    <link rel="stylesheet" href="../css/P3_styling.css">
+</head>
+<body>
+    <div class="content-wrap">
+        <header>
+            <div class="P3_banner">P3</div>
+        </header>
+
+        <div class="below-banner-content-wrap">
+            <main class="tab-content active">
+                <h1>We want your feedback!</h1>
+                <p>Tell us which health causes matter most to you! Please only write the name of the cause or causes that mean the most to you</p>
+
+                <!-- Form for submitting feeback -->
+                <form id="response-form">
+                    <p><label>Your feedback:<br>
+                        <textarea id="response" rows="5" maxlength="500" required></textarea>
+                    </label></p>
+                    <p id="response-status"></p>
+                    <button type="submit" class="form-button">Submit</button>
+                </form>
+            </main>
+        </div>
+    </div>
+
+    <script type="module">
+        import { supabase } from '../js/supabaseClient.js'
+
+        const response_form = document.getElementById('response-form')
+        const response_status = document.getElementById('response-status')
+        const button = response_form.querySelector('button') //Disabled submit button in certain cases
+
+        //Takes the value after the ?clinic= part of the link appended by scanning the QR code to identify the clinic
+        const clinic = new URLSearchParams(window.location.search).get('clinic')?.trim().slice(0, 100) || null
+
+        //If there isn't a value after the ?clinic= part of the link, then the user will be prompted to reopen the link from a QR code
+        if (!clinic) {
+            response_status.style.color = 'red'
+            response_status.textContent = 'Please open this page by scanning a clinic QR code.'
+            button.disabled = true
+        }
+
+        //Waits for submit button to be pressed
+        response_form.addEventListener('submit', async (e) => {
+            e.preventDefault()
+
+            //returns if there isn't a clinic value
+            if (!clinic) return
+
+            //Rejects empty submissions or submissions that are just spaces
+            const text = document.getElementById('response').value.trim()
+            if (!text) {
+                response_status.style.color = 'red'
+                response_status.textContent = 'Please write a response.'
+                return
+            }
+
+            button.disabled = true
+            response_status.style.color = 'black'
+            response_status.textContent = 'Sending...'
+
+            const { error } = await supabase.from('clinic_qr_response').insert({
+                clinic: clinic,
+                response: text
+            })
+
+            if (error) {
+                console.error(error)
+                response_status.style.color = 'red'
+                response_status.textContent = 'Something went wrong. Please try again.'
+                button.disabled = false
+                return
+            }
+
+            response_status.style.color = 'green'
+            response_status.textContent = 'Thank you for your feedback!'
+            response_form.reset()
+        })
+    </script>
+</body>
+</html>
