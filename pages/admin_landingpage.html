@@ -9,9 +9,31 @@
 <body class="dashboard-page">
     <div class = "content-wrap">
         <!-- Puts a static banner accros the top of the screen -->
-        <header>
-            <div class = "P3_banner">P3</div>
-        </header>
+<header>
+    <a class="P3_banner" href="admin_landingpage.html">
+        <span class="brand-mark">P3<span>+</span></span>
+        <span>
+            Medwell
+            <span class="brand-sub">PARTICIPATE. PREVENT. PROGRESS.</span>
+        </span>
+    </a>
+
+    <span class="header-note">Admin Portal</span>
+
+    <div style="display: flex; gap: 15px; align-items: center;">
+        <button type="button" class="theme-toggle" aria-pressed="false">
+            🌙 Dark mode
+        </button>
+
+        <div class="settings-menu">
+            <button class="settings-btn">⚙️ Settings</button>
+            <div class="settings-dropdown">
+                <a href="#">My Profile</a>
+                <a href="#" id="logout-btn">Logout</a>
+            </div>
+        </div>
+    </div>
+</header>
 
         <!-- class made to resolve issue with side border extending into banner -->
         <div class = "below-banner-content-wrap">
@@ -63,30 +85,36 @@
     </script>
 
     <!-- Makes sure only verified users can access associated account type pages -->
-    <script type="module">
-        import { supabase } from '../js/supabaseClient.js'
-    
-        const REQUIRED_TYPE = 'admin'
-    
-        const { data: { session } } = await supabase.auth.getSession()
-    
-        if (!session)
-        {
-            window.location.href = '../index.html'
-        }
-        else
-        {
-            const { data: profile, error: profileError } = await supabase
-                .from('profiles')
-                .select('role')
-                .eq('user_id', session.user.id)
-                .single()
-    
-            if (profileError || !profile || profile.role !== 'admin')
-            {
-                window.location.href = '../index.html'
+<script type="module">
+    import { supabase } from '../js/supabaseClient.js';
+    import { logout, checkUserRole } from '../js/auth.js';
+
+    async function init() {
+        const user = await checkUserRole('admin');
+        if (!user) return;
+
+        document.getElementById('logout-btn')?.addEventListener('click', logout);
+
+        const settingsBtn = document.querySelector('.settings-btn');
+        const settingsDropdown = document.querySelector('.settings-dropdown');
+
+        settingsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            settingsDropdown.classList.toggle('show');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!settingsDropdown.contains(e.target)) {
+                settingsDropdown.classList.remove('show');
             }
-        }
-    </script>
+        });
+
+        
+    }
+    init();
+</script>
+
+<script src="../js/design.js" defer></script>
+
 </body>
 </html>
