@@ -58,6 +58,7 @@
         
                 <section id = "registered-nonprofits-tab" class = "tab-content" role = "tabpanel">
                     <h1>Registered Non-Profits</h1>
+                    <div id="nonprofit-list"></div>
                 </section>
 
                 <section id = "account-creation-tab" class = "tab-content" role = "tabpanel">
@@ -145,6 +146,7 @@
         }
 
         loadAccounts('sponsor', 'sponsor-list');
+        loadAccounts('nonprofit', 'nonprofit-list');
     }
     init();
 </script>
