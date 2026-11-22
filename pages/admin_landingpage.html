@@ -110,13 +110,13 @@
             }
         });
 
-                async function loadAccounts(role, listId) {
+                                async function loadAccounts(role, listId) {
             const list = document.getElementById(listId);
             list.textContent = 'Loading...';
 
             const { data: people, error } = await supabase
                 .from('profiles')
-                .select('first_name, last_name, email, organizations:org_id ( org_name )')
+                .select('first_name, last_name, organizations:org_id ( org_name )')
                 .eq('role', role);
 
             if (error) {
@@ -138,10 +138,8 @@
                 org.textContent = x.organizations?.org_name ?? 'No organization yet';
                 const name = document.createElement('p');
                 name.textContent = (x.first_name ?? '') + ' ' + (x.last_name ?? '');
-                const email = document.createElement('p');
-                email.textContent = x.email;
 
-                card.append(org, name, email);
+                card.append(org, name);
                 list.append(card);
             }
         }
