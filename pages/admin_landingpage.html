@@ -53,6 +53,7 @@
                 
                 <section id = "registered-sponsors-tab" class = "tab-content" role = "tabpanel">
                     <h1>Registered Sponsors</h1>
+                    <div id="sponsor-list"></div>
                 </section>
         
                 <section id = "registered-nonprofits-tab" class = "tab-content" role = "tabpanel">
@@ -109,7 +110,43 @@
             }
         });
 
-        
+                async function loadAccounts(role, listId) {
+            const list = document.getElementById(listId);
+            list.textContent = 'Loading...';
+
+            const { data: people, error } = await supabase
+                .from('profiles')
+                .select('first_name, last_name, email, organizations:org_id ( org_name )')
+                .eq('role', role);
+
+            if (error) {
+                console.error(error);
+                list.textContent = 'Could not load accounts.';
+                return;
+            }
+            if (people.length === 0) {
+                list.textContent = 'None registered yet.';
+                return;
+            }
+
+            list.innerHTML = '';
+            for (const x of people) {
+                const card = document.createElement('div');
+                card.className = 'post-card';
+
+                const org = document.createElement('h3');
+                org.textContent = x.organizations?.org_name ?? 'No organization yet';
+                const name = document.createElement('p');
+                name.textContent = (x.first_name ?? '') + ' ' + (x.last_name ?? '');
+                const email = document.createElement('p');
+                email.textContent = x.email;
+
+                card.append(org, name, email);
+                list.append(card);
+            }
+        }
+
+        loadAccounts('sponsor', 'sponsor-list');
     }
     init();
 </script>
